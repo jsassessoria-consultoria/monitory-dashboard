@@ -15,13 +15,14 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
+    "types": ["next", "next/types/global", "node", "vitest/globals"],
     "paths": {
       "globals.css": ["./src/styles/globals.css"],
       "@providers": ["./src/providers/index.ts"],
       "@components": ["./src/components/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@utils": ["./src/utils/index.ts"],
-      "@fetcher": ["src/utils/fetcher/index.ts"],
+      "@fetcher": ["src/utils/fetcher/index.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
