@@ -1,7 +1,15 @@
 import { cva } from 'class-variance-authority';
 
-const container = cva(['text-blue-600']);
+const container = cva(['text-blue-900']);
 
 export default function Home() {
-  return <div className={container()}>Projeto</div>;
+  return (
+    <div>
+        <div className={container()}>
+          Projeto 
+      </div>
+
+    </div>
+   
+  );
 }
