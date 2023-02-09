@@ -1,3 +1,4 @@
+
 import { cva } from 'class-variance-authority';
 import Button from 'src/components/inputs/button';
 import Input from 'src/components/inputs/input';
@@ -118,5 +119,6 @@ const SignIn = () => {
       </div>
     </div>
   );
+
 };
 export default SignIn;

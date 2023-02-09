@@ -4,7 +4,9 @@ import { cva } from 'class-variance-authority';
 import Image from 'next/image';
 import axios from 'axios';
 import { useState } from 'react';
+
 import Link from 'next/link';
+
 
 const errorarea = cva(['bg-red-600 rounded-lg']);
 const title = cva([
@@ -17,6 +19,7 @@ const titleform = cva([
   'font-bold text-4xl text-white text-center mb-4 mt-4'
 ]);
 const descriptionform = cva(['text-lg text-white text-center mb-8']);
+
 const container = cva(['flex justify-start h-screen ']);
 const bgcontainer = cva(['w-1/2 flex flex-col md:hidden']);
 const formcontainer = cva([
@@ -130,7 +133,9 @@ const SignUp = () => {
             <Button type="submit" title="CADASTRAR" />
           </div>
         </form>
+
         <div className={descriptionform()}> Já tem uma conta?  <Link href="/login/signIn">Clique aqui </Link> para fazer login</div>
+
       </div>
     </div>
   );
