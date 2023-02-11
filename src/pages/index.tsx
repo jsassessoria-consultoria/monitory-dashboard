@@ -15,4 +15,5 @@ export default function Home() {
         <div className={container()}>Projeto {JSON.stringify(data.user, null, 2)}</div>
     );
   return <div>Loading</div>;
+
 }
