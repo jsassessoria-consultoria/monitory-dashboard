@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,16 +19,43 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "types": ["next", "next/types/global", "node", "vitest/globals"],
+    "types": [
+      "next",
+      "next/types/global",
+      "node",
+      "vitest/globals"
+    ],
     "paths": {
-      "globals.css": ["./src/styles/globals.css"],
-      "@providers": ["./src/providers/index.ts"],
-      "@components": ["./src/components/index.ts"],
-      "@hooks": ["./src/hooks/index.ts"],
-      "@utils": ["./src/utils/index.ts"],
-      "@fetcher": ["src/utils/fetcher/index.ts"]
+      "globals.css": [
+        "./src/styles/globals.css"
+      ],
+      "@providers": [
+        "./src/providers/index.ts"
+      ],
+      "@components": [
+        "./src/components/index.ts"
+      ],
+      "@hooks": [
+        "./src/hooks/index.ts"
+      ],
+      "@utils": [
+        "./src/utils/index.ts"
+      ],
+      "@fetcher": [
+        "src/utils/fetcher/index.ts"
+      ],
+      "@db": [
+        "src/utils/db/index.ts"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.config.js" ],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

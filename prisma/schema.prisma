@@ -6,6 +6,29 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Softwares {
+  id                 String           @id @default(cuid()) @map("_id")
+  raw_name           String
+  software_name      String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  Tempos_Monitorados Time_Monitored[]
+
+  @@map("softwares")
+}
+
+model Time_Monitored {
+  id               String   @id @default(cuid()) @map("_id")
+  software_id      String
+  accumulated_time Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  software Softwares @relation(fields: [software_id], references: [id])
+
+  @@map("time_monitored")
 }

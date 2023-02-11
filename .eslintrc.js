@@ -15,8 +15,12 @@ module.exports = eslint.defineConfig({
     es6: true
   },
   rules: {
-    'no-console': 'error',
+    'no-console': 'warn',
     '@typescript-eslint/comma-dangle': 'off'
   },
-  ignorePatterns: ['.eslintrc.js', 'next.config.js', 'vitest.config.ts', 'node_modules/']
+  ignorePatterns: [
+    '.eslintrc.js',
+    'next.config.js',
+    'vitest.config.ts'
+  ]
 });
