@@ -1,13 +1,9 @@
+
 import { cva } from 'class-variance-authority';
 import Button from 'src/components/inputs/button';
 import Input from 'src/components/inputs/input';
 import Image from 'next/image';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
-
-import Head from 'next/head';
-
 
 const container = cva(['flex justify-start h-screen']);
 const bgcontainer = cva(['w-1/2 flex flex-col md:hidden']);
@@ -33,59 +29,17 @@ const iconsArea = cva(['flex ml-20 mt-20']);
 const imageIcon = cva(['w-1/4']);
 const image = cva(['w-2/3 h-1/2 mt-32']);
 const icon = cva(['flex flex-col items-center ']);
-const errorarea = cva(['bg-red-600 rounded-lg']);
 
 const SignIn = () => {
-  const [errorsignIn, setErrorSignIn] = useState('');
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    try {
-      const data = {
-        email: event.target.email.value,
-        senha: event.target.senha.value
-      };
-      const { email, senha } = data;
-
-      const res: any = await signIn('credentials', {
-        email: email,
-        senha: senha,
-        redirect: false
-      });
-      
-      if ((res.status == 401)) {
-        setErrorSignIn(res.error);
-      } 
-      if (res.status == 200) {
-        window.location.href = '/';
-      }
-    } catch (error: any) {
-      setErrorSignIn(
-        'servidor não esta respondendo !! Tente novamente mais tarde'
-      );
-    }
-  };
-
   return (
     <div className={container()}>
-
-      <Head>
-        <title>SignIn</title>
-      </Head>
       <div className={formcontainer()}>
         <div className={titleform()}> ODS SAURON</div>
         <div className={descriptionform()}>
           Por favor faça login no sistema, <br /> Para monitorar os
           seus aparelhos.
-          <div className={errorarea()}>
-            {' '}
-            {errorsignIn != '' ? (
-              <div>{errorsignIn}</div>
-            ) : (
-              <div></div>
-            )}{' '}
-          </div>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form>
           <Input
             type="email"
             id="email"
@@ -108,9 +62,7 @@ const SignIn = () => {
         <div className={descriptionform()}>
           {' '}
           Ainda não tem uma conta?{' '}
-
-          <Link href="/auth/signUp">Clique aqui </Link> para
-
+          <Link href="/login/signUp">Clique aqui </Link> para
           cadastrar
         </div>
       </div>
@@ -167,5 +119,6 @@ const SignIn = () => {
       </div>
     </div>
   );
+
 };
 export default SignIn;

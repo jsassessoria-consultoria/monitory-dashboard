@@ -4,9 +4,8 @@ import { cva } from 'class-variance-authority';
 import Image from 'next/image';
 import axios from 'axios';
 import { useState } from 'react';
-import Link from 'next/link';
 
-import Head from 'next/head';
+import Link from 'next/link';
 
 
 const errorarea = cva(['bg-red-600 rounded-lg']);
@@ -20,6 +19,7 @@ const titleform = cva([
   'font-bold text-4xl text-white text-center mb-4 mt-4'
 ]);
 const descriptionform = cva(['text-lg text-white text-center mb-8']);
+
 const container = cva(['flex justify-start h-screen ']);
 const bgcontainer = cva(['w-1/2 flex flex-col md:hidden']);
 const formcontainer = cva([
@@ -47,11 +47,10 @@ const SignUp = () => {
       setErrorEmail(false);
       await axios
         .post('#', { email: email, senha: senha }) //caminho sera colocado posteriormente
-
-        .then(() => {
+        .then( () => {
           setError(false);
           setTimeout(function () {
-            window.location.href = '/auth/signIn';
+            window.location.href = '/login/signIn';
           }, 1000);
         })
         .catch(() => {
@@ -64,11 +63,6 @@ const SignUp = () => {
 
   return (
     <div className={container()}>
-
-      <Head>
-        <title>SignUp</title>
-      </Head>
-      
       <div className={bgcontainer()}>
         <div className={title()}>Primeiro Acesso</div>
         <div className={description()}>
@@ -140,12 +134,7 @@ const SignUp = () => {
           </div>
         </form>
 
-        <div className={descriptionform()}>
-          {' '}
-          Já tem uma conta?{' '}
-          <Link href="/auth/signIn">Clique aqui </Link> para fazer
-          login
-        </div>
+        <div className={descriptionform()}> Já tem uma conta?  <Link href="/login/signIn">Clique aqui </Link> para fazer login</div>
 
       </div>
     </div>
