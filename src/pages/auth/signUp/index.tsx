@@ -6,6 +6,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import Link from 'next/link';
 
+import Head from 'next/head';
+
+
 const errorarea = cva(['bg-red-600 rounded-lg']);
 const title = cva([
   'font-bold text-4xl text-black text-right mb-4 mt-4 float-right'
@@ -44,10 +47,11 @@ const SignUp = () => {
       setErrorEmail(false);
       await axios
         .post('#', { email: email, senha: senha }) //caminho sera colocado posteriormente
-        .then( () => {
+
+        .then(() => {
           setError(false);
           setTimeout(function () {
-            window.location.href = '/login/signIn';
+            window.location.href = '/auth/signIn';
           }, 1000);
         })
         .catch(() => {
@@ -60,6 +64,11 @@ const SignUp = () => {
 
   return (
     <div className={container()}>
+
+      <Head>
+        <title>SignUp</title>
+      </Head>
+      
       <div className={bgcontainer()}>
         <div className={title()}>Primeiro Acesso</div>
         <div className={description()}>
@@ -130,7 +139,14 @@ const SignUp = () => {
             <Button type="submit" title="CADASTRAR" />
           </div>
         </form>
-        <div className={descriptionform()}> Já tem uma conta?  <Link href="/login/signIn">Clique aqui </Link> para fazer login</div>
+
+        <div className={descriptionform()}>
+          {' '}
+          Já tem uma conta?{' '}
+          <Link href="/auth/signIn">Clique aqui </Link> para fazer
+          login
+        </div>
+
       </div>
     </div>
   );
