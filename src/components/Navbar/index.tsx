@@ -3,9 +3,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 
+
 const container = cva(['flex w-1/6']);
 const mainMenu = cva([
   ' inline-flex flex-col bg-violet-900 h-screen w-full '
+
 ]);
 const linknav = cva([
   'flex font-medium text-white ml-10 mb-5 hover:bg-white hover:text-black p-2 rounded'
@@ -20,7 +22,9 @@ const Navbar = () => {
           <Link className={linknav()} href="/">
             Inicio
           </Link>
+
           <Link className={linknav()} href="/searchReports">
+
             Pesquisar relatorios
           </Link>
           <Link className={linknav()} href="#">

@@ -5,8 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
-import Head from 'next/head';
 
+import Head from 'next/head';
+        
 const container = cva(['flex justify-start h-screen']);
 const bgcontainer = cva(['w-1/2 flex flex-col md:hidden']);
 const title = cva([
@@ -105,6 +106,7 @@ const SignIn = () => {
         <div className={descriptionform()}>
           {' '}
           Ainda não tem uma conta?{' '}
+
           <Link href="/auth/signUp">Clique aqui </Link> para
           cadastrar
         </div>

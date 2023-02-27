@@ -5,6 +5,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { useState } from 'react';
 import Link from 'next/link';
+
 import Head from 'next/head';
 
 const errorarea = cva(['bg-red-600 rounded-lg']);
@@ -61,9 +62,11 @@ const SignUp = () => {
 
   return (
     <div className={container()}>
+
       <Head>
         <title>SignUp</title>
       </Head>
+
       <div className={bgcontainer()}>
         <div className={title()}>Primeiro Acesso</div>
         <div className={description()}>
@@ -134,12 +137,14 @@ const SignUp = () => {
             <Button type="submit" title="CADASTRAR" />
           </div>
         </form>
+
         <div className={descriptionform()}>
           {' '}
           Já tem uma conta?{' '}
           <Link href="/auth/signIn">Clique aqui </Link> para fazer
           login
         </div>
+
       </div>
     </div>
   );
