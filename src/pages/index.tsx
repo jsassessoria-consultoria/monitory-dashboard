@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 import Navbar from 'src/components/Navbar';
 import Input from 'src/components/inputs/input';
 import Button from 'src/components/inputs/button';
-import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
 
 const container = cva(['text-white flex']);
-const BgContainer = cva(['flex flex-col w-1/2']);
+const BgContainer = cva(['flex flex-col w-1/2 ml-44 md:ml-20']);
 const searchContainer = cva([' bg-violet-900 p-3 rounded-lg mb-10']);
 const titleContainer = cva(['bg-violet-900  h-12 flex']);
 const dataContainer = cva(['bg-violet-800  h-12 flex ']);
@@ -107,7 +106,7 @@ export default function Home() {
           <div className={titleContainer()}>
             <div className={idArea()}>ID: </div>
             <div className={userArea()}>Usuario:</div>
-            <div className={actionArea()}>Ação: </div>
+            <div className={actionArea()}>Ação:</div>
           </div>
           {dataTest.length === 0 ? (
             <div className={arrayEmpty()}>
@@ -145,7 +144,7 @@ export default function Home() {
                     <div className={userArea()}>{data.name}</div>
                   )}
                   <div className={actionArea()}>
-                    <Link href="#">
+                    
                       <Image
                         src="/../public/images/editar.png"
                         alt="editar"
@@ -157,10 +156,8 @@ export default function Home() {
                           setIsEdit(true);
                           setCatchId(data.id);
                         }}
-                      />
-                    </Link>
-
-                    <Link href="#">
+                     />
+  
                       <Image
                         src="/../public/images/delete.png"
                         alt="deletar"
@@ -171,7 +168,7 @@ export default function Home() {
                         id={data.name}
                         onClick={deleteData}
                       />
-                    </Link>
+                
                   </div>
                 </div>
               ))}
