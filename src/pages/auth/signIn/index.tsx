@@ -7,8 +7,7 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 import Head from 'next/head';
-
-
+        
 const container = cva(['flex justify-start h-screen']);
 const bgcontainer = cva(['w-1/2 flex flex-col md:hidden']);
 const title = cva([
@@ -67,7 +66,6 @@ const SignIn = () => {
 
   return (
     <div className={container()}>
-
       <Head>
         <title>SignIn</title>
       </Head>
@@ -110,7 +108,6 @@ const SignIn = () => {
           Ainda não tem uma conta?{' '}
 
           <Link href="/auth/signUp">Clique aqui </Link> para
-
           cadastrar
         </div>
       </div>

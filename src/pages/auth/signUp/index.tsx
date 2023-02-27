@@ -8,7 +8,6 @@ import Link from 'next/link';
 
 import Head from 'next/head';
 
-
 const errorarea = cva(['bg-red-600 rounded-lg']);
 const title = cva([
   'font-bold text-4xl text-black text-right mb-4 mt-4 float-right'
@@ -47,7 +46,6 @@ const SignUp = () => {
       setErrorEmail(false);
       await axios
         .post('#', { email: email, senha: senha }) //caminho sera colocado posteriormente
-
         .then(() => {
           setError(false);
           setTimeout(function () {
@@ -68,7 +66,7 @@ const SignUp = () => {
       <Head>
         <title>SignUp</title>
       </Head>
-      
+
       <div className={bgcontainer()}>
         <div className={title()}>Primeiro Acesso</div>
         <div className={description()}>
