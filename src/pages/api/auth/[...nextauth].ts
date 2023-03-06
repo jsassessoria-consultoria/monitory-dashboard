@@ -1,5 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import credentialsProvider from 'next-auth/providers/credentials';
+import { getUniqueUser } from '../db/users';
+import bcrypt from 'bcrypt';
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -10,17 +12,22 @@ export const authOptions: NextAuthOptions = {
     credentialsProvider({
       type: 'credentials',
       credentials: {},
-      authorize(credentials, req) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      async authorize(credentials, req) {
         const { email, senha } = credentials as {
           email: string;
           senha: string;
         };
 
-        // logica do backend para encontrar o usuario aqui por enquanto vou colocar email e senha estaticos aqui
-        if (email !== 'teste@gmail.com' || senha !== '12345678') {
-          throw new Error('email ou senha incorretos!! ');
+        // logica do backend para encontrar o usuario
+        const hasUser = await getUniqueUser(email);
+        if (
+          email == hasUser.email &&
+          bcrypt.compareSync(senha, hasUser.password)
+        ) {
+          return { id: hasUser.id, email: hasUser.email };
         }
-        return { id: '1234', email: 'teste@gmail.com' };
+        return null;
       }
     })
     // ...add more providers here
