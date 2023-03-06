@@ -1,5 +1,6 @@
 import { createUser, getAllUser } from '../db/users';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import bcrypt from 'bcrypt';
 
 export default async function handler(
   req: NextApiRequest,
@@ -7,11 +8,10 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     const data = req.body;
+    data.password = bcrypt.hashSync(data.password, 10);
     const createdUser = await createUser(data);
     res.status(201).json({ data: createdUser });
-  }
-
-  if (req.method === 'GET') {
+  } else if (req.method === 'GET') {
     const allUsers = await getAllUser();
     res.status(200).json({ data: allUsers });
   } else {
