@@ -45,7 +45,10 @@ const SignUp = () => {
     if (email == confEmail) {
       setErrorEmail(false);
       await axios
-        .post('#', { email: email, senha: senha }) //caminho sera colocado posteriormente
+        .post(process.env.NEXT_PUBLIC_API_ROUTE + '/signup', {
+          email: email,
+          senha: senha
+        }) //caminho do back pegando do .env + nome da rota
         .then(() => {
           setError(false);
           setTimeout(function () {
@@ -62,7 +65,6 @@ const SignUp = () => {
 
   return (
     <div className={container()}>
-
       <Head>
         <title>SignUp</title>
       </Head>
@@ -144,7 +146,6 @@ const SignUp = () => {
           <Link href="/auth/signIn">Clique aqui </Link> para fazer
           login
         </div>
-
       </div>
     </div>
   );

@@ -20,14 +20,19 @@ export const authOptions: NextAuthOptions = {
         };
 
         // logica do backend para encontrar o usuario
-        const hasUser = await getUniqueUser(email);
-        if (
-          email == hasUser.email &&
-          bcrypt.compareSync(senha, hasUser.password)
-        ) {
-          return { id: hasUser.id, email: hasUser.email };
+        try {
+          const hasUser = await getUniqueUser(email);
+          if (
+            email == hasUser.email &&
+            bcrypt.compareSync(senha, hasUser.senha)
+          ) {
+            return { id: hasUser.id, email: hasUser.email };
+          } else {
+            throw new Error('Email ou Senha incorretos');
+          }
+        } catch (error) {
+          throw new Error('Email ou Senha incorretos');
         }
-        return null;
       }
     })
     // ...add more providers here
