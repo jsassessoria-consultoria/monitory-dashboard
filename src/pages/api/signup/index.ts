@@ -15,6 +15,6 @@ export default async function handler(
     const allUsers = await getAllUser();
     res.status(200).json({ data: allUsers });
   } else {
-    throw new Error('Only Get/Post method allowed!');
+    throw new Error('Only Post method allowed!');
   }
 }
