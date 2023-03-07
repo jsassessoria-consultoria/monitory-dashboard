@@ -33,6 +33,7 @@ const computer = cva(['w-1/3']);
 const SignUp = () => {
   const [emailError, setErrorEmail] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -55,8 +56,9 @@ const SignUp = () => {
             window.location.href = '/auth/signIn';
           }, 1000);
         })
-        .catch(() => {
+        .catch(err => {
           setError(true);
+          setErrorMessage(err.response.data.message);
         });
     } else {
       setErrorEmail(true);
@@ -107,8 +109,9 @@ const SignUp = () => {
           <div className={errorarea()}>
             {' '}
             {error
-              ? 'Não foi possivel fazer o cadastro!! Por favor tente novamente.'
-              : ''}{' '}
+              ? errorMessage
+              : //'Não foi possivel fazer o cadastro!! Por favor tente novamente.'
+              ''}{' '}
           </div>
         </div>
 
