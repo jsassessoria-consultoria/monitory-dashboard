@@ -33,6 +33,7 @@ const computer = cva(['w-1/3']);
 const SignUp = () => {
   const [emailError, setErrorEmail] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -45,15 +46,19 @@ const SignUp = () => {
     if (email == confEmail) {
       setErrorEmail(false);
       await axios
-        .post('#', { email: email, senha: senha }) //caminho sera colocado posteriormente
+        .post(process.env.NEXT_PUBLIC_API_ROUTE + '/signup', {
+          email: email,
+          senha: senha
+        }) //caminho do back pegando do .env + nome da rota
         .then(() => {
           setError(false);
           setTimeout(function () {
             window.location.href = '/auth/signIn';
           }, 1000);
         })
-        .catch(() => {
+        .catch(err => {
           setError(true);
+          setErrorMessage(err.response.data.message);
         });
     } else {
       setErrorEmail(true);
@@ -62,7 +67,6 @@ const SignUp = () => {
 
   return (
     <div className={container()}>
-
       <Head>
         <title>SignUp</title>
       </Head>
@@ -105,8 +109,9 @@ const SignUp = () => {
           <div className={errorarea()}>
             {' '}
             {error
-              ? 'Não foi possivel fazer o cadastro!! Por favor tente novamente.'
-              : ''}{' '}
+              ? errorMessage
+              : //'Não foi possivel fazer o cadastro!! Por favor tente novamente.'
+              ''}{' '}
           </div>
         </div>
 
@@ -144,7 +149,6 @@ const SignUp = () => {
           <Link href="/auth/signIn">Clique aqui </Link> para fazer
           login
         </div>
-
       </div>
     </div>
   );
