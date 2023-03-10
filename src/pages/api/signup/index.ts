@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
 import { verifyAlreadyHasUser } from './_utils';
 import { createUser, getAllUser } from 'src/lib/prisma/users';
+import { schemaValidator } from 'src/middleware/schemaValidator';
+import { userSchema } from 'src/schemas/userSchema';
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,6 +16,12 @@ export default async function handler(
     const hasUser = await verifyAlreadyHasUser(data.email);
     if (hasUser) {
       res.status(406).json({ message: 'Email já cadastrado' });
+      return;
+    }
+
+    const validateBody = await schemaValidator(userSchema, data);
+    if (validateBody.errors) {
+      res.status(406).json({ message: validateBody.errors });
       return;
     }
 
