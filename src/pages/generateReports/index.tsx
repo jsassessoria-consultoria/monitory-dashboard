@@ -18,7 +18,7 @@ export default function GenerateReports() {
     return (
       <div className={container()}>
         <Head>
-          <title>Pesquisar Relatorios</title>
+          <title>Gerar Relatorios</title>
         </Head>
         <Navbar />
         <div className={bgContainer()}>

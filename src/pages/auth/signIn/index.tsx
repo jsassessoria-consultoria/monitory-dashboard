@@ -5,8 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
-import Head from 'next/head';
 
+import Head from 'next/head';
+        
 const container = cva(['flex justify-start h-screen']);
 const bgcontainer = cva(['w-1/2 flex flex-col md:hidden']);
 const title = cva([
@@ -32,7 +33,6 @@ const imageIcon = cva(['w-1/4']);
 const image = cva(['w-2/3 h-1/2 mt-32']);
 const icon = cva(['flex flex-col items-center ']);
 const errorarea = cva(['bg-red-600 rounded-lg']);
-
 
 const SignIn = () => {
   const [errorsignIn, setErrorSignIn] = useState('');
@@ -106,7 +106,8 @@ const SignIn = () => {
         <div className={descriptionform()}>
           {' '}
           Ainda não tem uma conta?{' '}
-          <Link href="/auth/signUp" >Clique aqui </Link> para
+
+          <Link href="/auth/signUp">Clique aqui </Link> para
           cadastrar
         </div>
       </div>
