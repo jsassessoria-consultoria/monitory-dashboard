@@ -1,4 +1,5 @@
 import 'globals.css';
+import 'rsuite/dist/rsuite.min.css';
 
 import type { AppProps } from 'next/app';
 

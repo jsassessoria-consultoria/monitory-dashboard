@@ -6,8 +6,8 @@ import Navbar from 'src/components/Navbar';
 import ReportForm from 'src/components/reportForm';
 
 const container = cva(['flex']);
-const bgContainer = cva(['ml-44 md:ml-20 mt-10 w-full']);
-export default function SearchReports() {
+const bgContainer = cva(['ml-44 md:ml-20 mt-10 w-3/4']);
+export default function GenerateReports() {
   const { status } = useSession();
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -22,7 +22,7 @@ export default function SearchReports() {
         </Head>
         <Navbar />
         <div className={bgContainer()}>
-          <ReportForm inputDate={true} message='Pesquise seus relatorios antigos aqui'/>
+          <ReportForm />
         </div>
       </div>
     );

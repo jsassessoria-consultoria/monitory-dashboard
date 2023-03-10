@@ -33,6 +33,7 @@ const image = cva(['w-2/3 h-1/2 mt-32']);
 const icon = cva(['flex flex-col items-center ']);
 const errorarea = cva(['bg-red-600 rounded-lg']);
 
+
 const SignIn = () => {
   const [errorsignIn, setErrorSignIn] = useState('');
   const handleSubmit = async (event: any) => {
@@ -105,7 +106,7 @@ const SignIn = () => {
         <div className={descriptionform()}>
           {' '}
           Ainda não tem uma conta?{' '}
-          <Link href="/auth/signUp">Clique aqui </Link> para
+          <Link href="/auth/signUp" >Clique aqui </Link> para
           cadastrar
         </div>
       </div>
