@@ -7,16 +7,15 @@ import Button from 'src/components/inputs/button';
 import Image from 'next/image';
 import Head from 'next/head';
 
+
 const container = cva(['text-white flex']);
-
 const BgContainer = cva(['flex flex-col w-1/2 ml-44 md:ml-20']);
-
 const searchContainer = cva([' bg-violet-900 p-3 rounded-lg mb-10']);
-const titleContainer = cva(['bg-violet-900  h-12 flex']);
+const titleContainer = cva(['bg-violet-900  h-12 flex font-bold']);
 const dataContainer = cva(['bg-violet-800  h-12 flex ']);
-const idArea = cva(['text-white font-medium w-1/4 mt-3 ml-2']);
-const userArea = cva(['text-white font-medium w-1/2 mt-3']);
-const actionArea = cva(['text-white font-medium w-1/4 mt-3 flex ']);
+const idArea = cva(['text-white font-medium w-1/4 mt-3 ml-2 font-bold']);
+const userArea = cva(['text-white font-medium w-1/2 mt-3 font-bold']);
+const actionArea = cva(['text-white font-medium w-1/4 mt-3 flex font-bold']);
 const icon = cva(['hover:scale-150']);
 const userEditArea = cva(['font-medium w-1/2 flex ']);
 const inputArea = cva(['w-3/4']);
@@ -29,6 +28,8 @@ type User = {
   id: number;
   name: string;
 };
+
+
 
 export default function Home() {
   const { status } = useSession();
@@ -149,7 +150,7 @@ export default function Home() {
                   )}
                   <div className={actionArea()}>
 
-                    
+               
                       <Image
                         src="/../public/images/editar.png"
                         alt="editar"
@@ -174,6 +175,7 @@ export default function Home() {
                         id={data.name}
                         onClick={deleteData}
                       />
+
                   </div>
                 </div>
               ))}
