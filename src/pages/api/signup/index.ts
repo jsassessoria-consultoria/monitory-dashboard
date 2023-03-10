@@ -1,11 +1,7 @@
-import { createUser, getAllUser } from '../db/users';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
-import {
-  validateEmail,
-  validatePassword,
-  verifyAlreadyHasUser
-} from './_utils';
+import { verifyAlreadyHasUser } from './_utils';
+import { createUser, getAllUser } from 'src/lib/prisma/users';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,20 +14,6 @@ export default async function handler(
     const hasUser = await verifyAlreadyHasUser(data.email);
     if (hasUser) {
       res.status(406).json({ message: 'Email já cadastrado' });
-      return;
-    }
-
-    const validEmail = validateEmail(data.email);
-    if (validEmail === null) {
-      res.status(406).json({ message: 'Email inválido' });
-      return;
-    }
-
-    const validSenha = validatePassword(data.senha);
-    if (validSenha === null) {
-      res
-        .status(406)
-        .json({ message: 'Senha precisa ter 8 ou mais caracteres' });
       return;
     }
 
