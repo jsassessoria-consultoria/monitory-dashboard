@@ -2,6 +2,7 @@ import { cva } from 'class-variance-authority';
 import { useState, useEffect } from 'react';
 import Input from '../inputs/input';
 import Button from '../inputs/button';
+
 import StringfyDate from '../StringfyDate';
 import axios from 'axios';
 import DateRangePicker, { DateRange } from 'rsuite/DateRangePicker';
@@ -15,37 +16,46 @@ const errorarea = cva(['bg-red-600 rounded-lg mb-10 text-center']);
 const sucessarea = cva([
   'bg-green-600 rounded-lg mt-10 text-center'
 ]);
+
 const container = cva([
   'flex flex-col text-white w-3/4 p-10 h-3/4 bg-violet-900 rounded-xl'
 ]);
 const title = cva(['text-center text-white text-xl mb-10']);
+
 const dateTitle = cva(['mb-10']);
 const titleContainer = cva(['bg-violet-700  h-12 flex font-bold']);
 const mainContainer = cva(['overflow-y-scroll h-1/4 ']);
 const dataContainer = cva([
   'bg-violet-800  h-12 flex hover:bg-violet-600 text-sm'
+
 ]);
 const dataContainerSelect = cva([
   'bg-violet-600  h-12 flex hover:bg-violet-600 '
 ]);
+
 const idArea = cva(['text-white font-medium w-1/4 mt-3 ml-2 font-bold']);
 const userArea = cva(['text-white font-medium w-1/2 mt-3 font-bold']);
+
 const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
 ]);
 const arrayEmpty = cva([
   'text-white text-center font-medium mt-10 mb-10'
 ]);
+
 const label = cva([
   'block mb-2 ml-2 text-lg font-medium text-white dark:text-white'
 ]);
+
 
 type User = {
   id: number;
   name: string;
 };
 
+
 const ReportForm = () => {
+
   const [dataTest, setDatatest] = useState<User[]>([
     { id: 12345, name: 'Airi Satou' }, //esses dados estão simulando o recebimento dos usuarios no back-end
     { id: 12346, name: 'Angelica Ramos' },
@@ -62,6 +72,7 @@ const ReportForm = () => {
   const [idValue, setIdvalue] = useState<number>();
   const [error, setError] = useState<String>();
   const [sucess, setSucess] = useState<String>();
+
   const [dateValue, setDateValue] = useState<DateRange>();
   const [devices, setDevices] = useState<any[]>([[]]); // estado criado so para testar renderização
   const Currentdate = new Date();
@@ -116,6 +127,7 @@ const ReportForm = () => {
     }
   };
 
+
   const searchUsers = (e: any) => {
     if (e.target.value == '') {
       setDatatest(dataInit);
@@ -128,12 +140,15 @@ const ReportForm = () => {
     }
   };
 
+
   const handleDate = (value: any) => {
     setDateValue(value);
+
   };
 
   return (
     <div className={container()}>
+
       <div className={title()}>Pesquise seus relatorios aqui</div>
       <form onSubmit={handleSubmit}>
         <div className={dateTitle()}>
@@ -156,6 +171,7 @@ const ReportForm = () => {
             />
           </CustomProvider>
         </div>
+
         <Input
           placeholder="Pesquise um usuario"
           id="search"
@@ -164,6 +180,7 @@ const ReportForm = () => {
           type="text"
           onChange={searchUsers}
         />
+
         {error === '' ? (
           <div></div>
         ) : (
@@ -174,6 +191,7 @@ const ReportForm = () => {
         ) : (
           <div className={sucessarea()}>{sucess}</div>
         )}
+
         <div className={titleContainer()}>
           <div className={idArea()}>ID: </div>
           <div className={userArea()}>Usuario:</div>
@@ -209,6 +227,7 @@ const ReportForm = () => {
             ))}
           </div>
         )}
+
 
         <div className={buttonarea()}>
           <Button type="submit" title="Buscar Relatorio" />
