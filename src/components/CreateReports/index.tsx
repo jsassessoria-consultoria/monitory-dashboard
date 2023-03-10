@@ -26,7 +26,7 @@ function CreateReports(reports: any, user: any, date: any) {
     dateEndArray[0];
   const reportTitle: TitleReports[] = [
     {
-      text: 'Monitoramento do dia:' + textDate,
+      text: 'Monitoramento do dia: ' + textDate,
       fontSize: 15,
       bold: true,
       margin: [15, 20, 0, 70] // left, top, right, bottom
@@ -56,11 +56,12 @@ function CreateReports(reports: any, user: any, date: any) {
     });
     return dataColumn;
   }
+  let i:number = -1;
   const data = reports.map((report: any) => {
     let dateArray = report[0].data.split('-');
     let ReportDate =
       dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
-    let i:number = -1;
+    
     i = i + 1;
     let dataSoftware:any = generateColumns(i);
     
