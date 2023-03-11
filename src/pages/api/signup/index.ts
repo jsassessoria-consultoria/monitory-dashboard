@@ -32,6 +32,8 @@ export default async function handler(
     const allUsers = await getAllUser();
     res.status(200).json({ data: allUsers });
   } else {
-    throw new Error('Only Post method allowed!');
+    res
+      .status(500)
+      .send({ message: `Método ${req.method} não é permitido` });
   }
 }
