@@ -13,15 +13,15 @@ export default async function handler(
   if (req.method === 'POST') {
     const data = req.body;
 
-    const hasUser = await verifyAlreadyHasUser(data.email);
-    if (hasUser) {
-      res.status(406).json({ message: 'Email já cadastrado' });
-      return;
-    }
-
     const validateBody = await schemaValidator(userSchema, data);
     if (validateBody.errors) {
       res.status(406).json({ message: validateBody.errors });
+      return;
+    }
+
+    const hasUser = await verifyAlreadyHasUser(data.email);
+    if (hasUser) {
+      res.status(406).json({ message: 'Email já cadastrado' });
       return;
     }
 
