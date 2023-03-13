@@ -24,3 +24,22 @@ export async function createDevice(data: any, uuid: any) {
     throw new Error(error);
   }
 }
+
+export async function deleteDevice(id?: string) {
+  try {
+    return await prisma.token.delete({ where: { id } });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function getIdDevice(id: string) {
+  try {
+    return await prisma.dispositivo.findFirst({
+      where: { id },
+      include: { Token: true }
+    });
+  } catch (error: any) {
+    throw new Error('Usuário não encontrado');
+  }
+}
