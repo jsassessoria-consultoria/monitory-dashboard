@@ -1,7 +1,7 @@
 import { prisma } from './db';
 
 export async function getDevices() {
-  return prisma.dispositivo.findMany({});
+  return prisma.token.findMany({ include: { dispositivo: true } });
 }
 
 export async function getOneDevice(nome: string) {
