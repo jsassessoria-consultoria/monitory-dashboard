@@ -22,13 +22,15 @@ model Usuario_Web {
 
 model Dispositivo {
   id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  nome            String            @unique
+  usuario         String
+  nome            String
   localizacao     String
   created_at      DateTime          @default(now())
   updated_at      DateTime          @default(now())
   Token           Token[]
   TempoMonitorado TempoMonitorado[]
 
+  @@unique([nome, usuario])
   @@map("dispositivos")
 }
 
