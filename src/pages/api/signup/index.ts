@@ -1,11 +1,9 @@
-import { createUser, getAllUser } from '../db/users';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import bcrypt from 'bcrypt';
-import {
-  validateEmail,
-  validatePassword,
-  verifyAlreadyHasUser
-} from './_utils';
+import { verifyAlreadyHasUser } from './_utils';
+import { createUser, getAllUser } from 'src/lib/prisma/users';
+import { schemaValidator } from 'src/middleware/schemaValidator';
+import { userSchema } from 'src/schemas/userSchema';
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,23 +13,15 @@ export default async function handler(
   if (req.method === 'POST') {
     const data = req.body;
 
+    const validateBody = await schemaValidator(userSchema, data);
+    if (validateBody.errors) {
+      res.status(406).json({ message: validateBody.errors });
+      return;
+    }
+
     const hasUser = await verifyAlreadyHasUser(data.email);
     if (hasUser) {
       res.status(406).json({ message: 'Email já cadastrado' });
-      return;
-    }
-
-    const validEmail = validateEmail(data.email);
-    if (validEmail === null) {
-      res.status(406).json({ message: 'Email inválido' });
-      return;
-    }
-
-    const validSenha = validatePassword(data.senha);
-    if (validSenha === null) {
-      res
-        .status(406)
-        .json({ message: 'Senha precisa ter 8 ou mais caracteres' });
       return;
     }
 
@@ -42,6 +32,8 @@ export default async function handler(
     const allUsers = await getAllUser();
     res.status(200).json({ data: allUsers });
   } else {
-    throw new Error('Only Post method allowed!');
+    res
+      .status(500)
+      .send({ message: `Método ${req.method} não é permitido` });
   }
 }
