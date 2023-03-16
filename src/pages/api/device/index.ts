@@ -53,9 +53,12 @@ export default async function handler(
     }
 
     const generatedToken = generateToken();
-    await createDevice(req.body, generatedToken);
-
-    res.status(201).send({ data: { token: generatedToken } });
+    try {
+      await createDevice(req.body, generatedToken);
+      res.status(201).send({ data: { token: generatedToken } });
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   } else if (req.method === 'PUT') {
     const { id, nome, usuario } = req.body;
 
@@ -117,11 +120,18 @@ export default async function handler(
         await deleteDevice(device?.Token[0].id);
         res.status(204).end();
         return;
+      } else {
+        res
+          .status(404)
+          .send({
+            message:
+              'dispositivo: ' +
+              device.nome +
+              ' já foi deletado e não está mais coletando dados'
+          });
       }
     } catch (error: any) {
-      res
-        .status(404)
-        .send({ message: 'Não existe dispositivo com Id: ' + id });
+      res.status(500).send({ message: error.message });
     }
   } else {
     res
