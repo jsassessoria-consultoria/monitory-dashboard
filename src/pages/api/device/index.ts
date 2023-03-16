@@ -116,19 +116,23 @@ export default async function handler(
 
     try {
       const device = await getIdDevice(id);
+      if (!device) {
+        res
+          .status(404)
+          .json({ message: 'Não existe dispositivo com Id: ' + id });
+        return;
+      }
       if (device?.Token.length !== 0) {
         await deleteDevice(device?.Token[0].id);
         res.status(204).end();
         return;
       } else {
-        res
-          .status(404)
-          .send({
-            message:
-              'dispositivo: ' +
-              device.nome +
-              ' já foi deletado e não está mais coletando dados'
-          });
+        res.status(404).send({
+          message:
+            'dispositivo: ' +
+            device.nome +
+            ' já foi deletado e não está mais coletando dados'
+        });
       }
     } catch (error: any) {
       res.status(500).send({ message: error.message });
