@@ -4,10 +4,6 @@ export async function getDevices() {
   return prisma.token.findMany({ include: { dispositivo: true } });
 }
 
-export async function getOneDeviceByName(nome: string) {
-  return prisma.dispositivo.findFirst({ where: { nome } });
-}
-
 export async function getOneDeviceByNameAndUser(
   nome: string,
   usuario: string
