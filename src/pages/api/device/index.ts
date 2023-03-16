@@ -45,12 +45,10 @@ export default async function handler(
       usuario
     );
     if (alreadyHasUser) {
-      res
-        .status(406)
-        .json({
-          message:
-            'Já existe um usuário com esse dispositivo cadastrado'
-        });
+      res.status(406).json({
+        message:
+          'Já existe um usuário com esse dispositivo cadastrado'
+      });
       return;
     }
 
@@ -83,13 +81,14 @@ export default async function handler(
       nome,
       usuario
     );
-    if (alreadyHasUserAndDevice) {
-      res
-        .status(406)
-        .json({
-          message:
-            'Já existe um usuário com esse dispositivo cadastrado'
-        });
+    if (
+      alreadyHasUserAndDevice &&
+      alreadyHasUserAndDevice.Token.length !== 0
+    ) {
+      res.status(406).json({
+        message:
+          'Já existe um usuário com esse dispositivo cadastrado'
+      });
       return;
     }
 

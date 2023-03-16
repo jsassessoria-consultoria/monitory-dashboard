@@ -12,7 +12,10 @@ export async function getOneDeviceByNameAndUser(
   nome: string,
   usuario: string
 ) {
-  return prisma.dispositivo.findFirst({ where: { nome, usuario } });
+  return prisma.dispositivo.findFirst({
+    where: { nome, usuario },
+    include: { Token: true }
+  });
 }
 
 export async function createDevice(data: any, uuid: any) {
