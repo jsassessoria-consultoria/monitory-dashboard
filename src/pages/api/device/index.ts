@@ -4,12 +4,16 @@ import {
   deleteDevice,
   getDevices,
   getIdDevice,
-  getOneDevice
+  getOneDeviceByNameAndUser,
+  getOnlyIdDevice,
+  updateDevice
 } from 'src/lib/prisma/devices';
 import { generateToken } from 'src/lib/uuid';
 import { schemaValidator } from 'src/middleware/schemaValidator';
 import { deleteDeviceSchema } from 'src/schemas/deleteDeviceSchema';
 import { deviceSchema } from 'src/schemas/deviceSchema';
+import { updateDeviceSchema } from 'src/schemas/updateDeviceSchema';
+import { getAllBuilder } from 'src/utils/api/jsonBuilder';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,9 +22,14 @@ export default async function handler(
   //TODO: Validar todas as rotas cm token via header bearer token
   if (req.method === 'GET') {
     const allDevices = await getDevices();
-    res.status(200).send({ data: allDevices });
+    const allDevicesFormated = getAllBuilder(allDevices);
+    try {
+      res.status(200).send({ data: allDevicesFormated });
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   } else if (req.method === 'POST') {
-    const { nome } = req.body;
+    const { nome, usuario } = req.body;
 
     const validateBody = await schemaValidator(
       deviceSchema,
@@ -31,11 +40,17 @@ export default async function handler(
       return;
     }
 
-    const alreadyHasUser = await getOneDevice(nome);
+    const alreadyHasUser = await getOneDeviceByNameAndUser(
+      nome,
+      usuario
+    );
     if (alreadyHasUser) {
       res
         .status(406)
-        .json({ message: 'Nome do dispositivo já cadastrado' });
+        .json({
+          message:
+            'Já existe um usuário com esse dispositivo cadastrado'
+        });
       return;
     }
 
@@ -44,7 +59,47 @@ export default async function handler(
 
     res.status(201).send({ data: { token: generatedToken } });
   } else if (req.method === 'PUT') {
-    res.status(202).send('PUT');
+    const { id, nome, usuario } = req.body;
+
+    const validateBody = await schemaValidator(
+      updateDeviceSchema,
+      req.body
+    );
+    if (validateBody.errors) {
+      res.status(406).json({ message: validateBody.errors });
+      return;
+    }
+
+    try {
+      await getOnlyIdDevice(id);
+    } catch (error) {
+      res
+        .status(404)
+        .json({ message: 'Não existe dispositivo com Id: ' + id });
+      return;
+    }
+
+    const alreadyHasUserAndDevice = await getOneDeviceByNameAndUser(
+      nome,
+      usuario
+    );
+    if (alreadyHasUserAndDevice) {
+      res
+        .status(406)
+        .json({
+          message:
+            'Já existe um usuário com esse dispositivo cadastrado'
+        });
+      return;
+    }
+
+    try {
+      const updatedUser = await updateDevice(id, nome, usuario);
+      res.status(200).send({ data: updatedUser });
+      return;
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   } else if (req.method === 'DELETE') {
     const { id } = req.body;
 
@@ -64,13 +119,10 @@ export default async function handler(
         res.status(204).end();
         return;
       }
+    } catch (error: any) {
       res
         .status(404)
-        .send({
-          message: `Token do usuário: ${device?.nome} não encontrado!`
-        });
-    } catch (error: any) {
-      res.status(404).send({ message: error.message });
+        .send({ message: 'Não existe dispositivo com Id: ' + id });
     }
   } else {
     res

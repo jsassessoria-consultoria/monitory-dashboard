@@ -4,12 +4,15 @@ export async function getDevices() {
   return prisma.token.findMany({ include: { dispositivo: true } });
 }
 
-export async function getOneDevice(nome: string) {
-  try {
-    return await prisma.dispositivo.findFirst({ where: { nome } });
-  } catch (error: any) {
-    throw new Error(error);
-  }
+export async function getOneDeviceByName(nome: string) {
+  return prisma.dispositivo.findFirst({ where: { nome } });
+}
+
+export async function getOneDeviceByNameAndUser(
+  nome: string,
+  usuario: string
+) {
+  return prisma.dispositivo.findFirst({ where: { nome, usuario } });
 }
 
 export async function createDevice(data: any, uuid: any) {
@@ -34,12 +37,31 @@ export async function deleteDevice(id?: string) {
 }
 
 export async function getIdDevice(id: string) {
+  return prisma.dispositivo.findFirst({
+    where: { id },
+    include: { Token: true }
+  });
+}
+
+export async function updateDevice(
+  id: string,
+  nome?: string,
+  usuario?: string
+) {
   try {
-    return await prisma.dispositivo.findFirst({
+    return await prisma.dispositivo.update({
       where: { id },
-      include: { Token: true }
+      data: { nome, usuario }
     });
   } catch (error: any) {
-    throw new Error('Usuário não encontrado');
+    throw new Error('Update não realizado');
+  }
+}
+
+export async function getOnlyIdDevice(id: string) {
+  try {
+    return await prisma.dispositivo.findFirst({ where: { id } });
+  } catch (error) {
+    throw new Error();
   }
 }
