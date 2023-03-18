@@ -6,10 +6,11 @@ import Input from 'src/components/inputs/input';
 import Button from 'src/components/inputs/button';
 import Image from 'next/image';
 import Head from 'next/head';
+import Loading from 'src/components/Loading';
 
-const container = cva(['text-white flex']);
-const BgContainer = cva(['flex flex-col w-1/2 ml-44 md:ml-20']);
-const searchContainer = cva([' bg-violet-900 p-3 rounded-lg mb-10']);
+const container = cva(['text-white flex sm:flex-col']);
+const BgContainer = cva(['flex flex-col w-1/2 ml-44 md:ml-20 sm:w-full sm:ml-0']);
+const searchContainer = cva([' bg-violet-900 p-3 rounded-lg mb-10 sm:mt-5']);
 const titleContainer = cva(['bg-violet-900  h-12 flex font-bold']);
 const dataContainer = cva(['bg-violet-800  h-12 flex ']);
 const idArea = cva(['text-white font-medium w-1/4 mt-3 ml-2 font-bold']);
@@ -19,7 +20,7 @@ const icon = cva(['hover:scale-150']);
 const userEditArea = cva(['font-medium w-1/2 flex ']);
 const inputArea = cva(['w-3/4']);
 const buttonArea = cva(['w-1/5 h-10 mt-1 ml-1']);
-const mainContainer = cva(['overflow-y-scroll h-1/2']);
+const mainContainer = cva(['overflow-y-scroll h-1/2 sm:h-full sm:overflow-y-hidden']);
 const formArea = cva(['flex']);
 const arrayEmpty = cva(['text-black text-center font-medium mt-10']);
 
@@ -178,5 +179,5 @@ export default function Home() {
         </div>
       </div>
     );
-  return <div>Loading</div>;
+  return <Loading />;
 }
