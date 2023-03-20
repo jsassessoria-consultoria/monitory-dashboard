@@ -12,21 +12,61 @@ datasource db {
 }
 
 model Usuario_Web {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
-  senha String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  email      String   @unique
+  senha      String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
   @@map("usuarios_web")
 }
 
-model Usuario {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  nome        String @unique
-  localizacao String
+model Dispositivo {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  usuario         String
+  nome            String
+  localizacao     String
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @default(now())
+  Token           Token[]
+  TempoMonitorado TempoMonitorado[]
+
+  @@unique([nome, usuario])
+  @@map("dispositivos")
+}
+
+model Token {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  token          String
+  dispositivo    Dispositivo @relation(fields: [dispositivo_id], references: [id])
+  dispositivo_id String      @db.ObjectId
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @default(now())
+
+  @@map("token")
+}
+
+model TempoMonitorado {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  tempo      Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  @@map("usuarios")
+  software    Software @relation(fields: [software_id], references: [id])
+  software_id String   @db.ObjectId
+
+  dispositivo    Dispositivo @relation(fields: [dispositivo_id], references: [id])
+  dispositivo_id String      @db.ObjectId
+
+  @@map("tempo_monitorado")
+}
+
+model Software {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  nome            String
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @default(now())
+  TempoMonitorado TempoMonitorado[]
+
+  @@map("software")
 }
