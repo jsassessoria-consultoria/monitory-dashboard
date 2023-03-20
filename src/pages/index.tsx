@@ -7,51 +7,82 @@ import Button from 'src/components/inputs/button';
 import Image from 'next/image';
 import Head from 'next/head';
 
+import Loading from 'src/components/Loading';
+import Link from 'next/link';
+import axios from 'axios';
 
-const container = cva(['text-white flex']);
-const BgContainer = cva(['flex flex-col w-1/2 ml-44 md:ml-20']);
-const searchContainer = cva([' bg-violet-900 p-3 rounded-lg mb-10']);
+const container = cva(['text-white flex sm:flex-col']);
+const BgContainer = cva([
+  'flex flex-col w-1/2 ml-44 md:ml-20 sm:w-full sm:ml-0'
+]);
+const searchContainer = cva([
+  ' bg-violet-900 p-3 rounded-lg mb-10 sm:mt-5'
+]);
 const titleContainer = cva(['bg-violet-900  h-12 flex font-bold']);
 const dataContainer = cva(['bg-violet-800  h-12 flex ']);
-const idArea = cva(['text-white font-medium w-1/4 mt-3 ml-2 font-bold']);
-const userArea = cva(['text-white font-medium w-1/2 mt-3 font-bold']);
-const actionArea = cva(['text-white font-medium w-1/4 mt-3 flex font-bold']);
+const DeviceArea = cva([
+  'text-white font-medium w-1/4 mt-3 font-bold'
+]);
+const userArea = cva([
+  'text-white ml-2  font-medium w-1/4 mt-3 font-bold'
+]);
+const userDataArea = cva([
+  'text-white ml-2  font-medium w-1/2 mt-3 font-bold'
+]);
+const DeviceDataArea = cva([
+  'text-white font-medium w-1/2 mt-3 font-bold'
+]);
+const localeArea = cva([
+  'text-white font-medium w-1/4 mt-3 font-bold'
+]);
+const actionArea = cva([
+  'text-white font-medium w-1/4 mt-3 flex font-bold'
+]);
 const icon = cva(['hover:scale-150']);
 const userEditArea = cva(['font-medium w-1/2 flex ']);
 const inputArea = cva(['w-3/4']);
-const buttonArea = cva(['w-1/5 h-10 mt-1 ml-1']);
-const mainContainer = cva(['overflow-y-scroll h-1/2']);
+const buttonArea = cva(['w-1/5 h-10 mt-1 ml-1 flex ']);
+const mainContainer = cva([
+  'overflow-y-scroll h-1/2 sm:h-full sm:overflow-y-hidden'
+]);
 const formArea = cva(['flex']);
 const arrayEmpty = cva(['text-black text-center font-medium mt-10']);
+const errorarea = cva(['bg-red-600 rounded-lg']);
+const clientArea = cva(['flex w-1/2']);
 
 type User = {
-  id: number;
-  name: string;
+  id: string;
+  usuario: string;
+  nome: string;
+  localizacao: string;
 };
-
-
 
 export default function Home() {
   const { status } = useSession();
-  const [dataTest, setDatatest] = useState<User[]>([
-    { id: 12345, name: 'Airi Satou' }, //esses dados estão simulando o recebimento dos usuarios no back-end
-    { id: 12346, name: 'Angelica Ramos' },
-    { id: 12347, name: 'Ashton Cox' },
-    { id: 12348, name: 'Bradley Greer' },
-    { id: 12349, name: 'Brenden Wagner' },
-    { id: 15342, name: 'Caesar Vance' },
-    { id: 16343, name: 'Cara Stevens' },
-    { id: 17341, name: 'Cedric Kelly' },
-    { id: 14341, name: 'Gloria Little' },
-    { id: 19342, name: 'Jenette Caldwell' }
-  ]);
-
+  const [dataTest, setDatatest] = useState<User[]>([]);
   const [dataInit, setDataInit] = useState<User[]>([]);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [catchId, setCatchId] = useState<number>();
+  const [catchId, setCatchId] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
+  async function fetchdata() {
+    await axios
+      .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
+      .then(res => {
+        setDatatest(res.data.data);
+        setErrorMessage('');
+      })
+      .then(() => {
+        setDataInit(dataTest);
+      })
+      .catch(() => {
+        setErrorMessage('algo deu errado tente novamente');
+      });
+  }
   useEffect(() => {
     setDataInit(dataTest); // o react hook ta reclamando mas isso sera removido mais tarde por um metodo axios para pegar os dados, esta aqui so para um teste de dados
+    fetchdata();
+
     if (status === 'unauthenticated') {
       window.location.href = '/auth/signIn';
     }
@@ -62,32 +93,55 @@ export default function Home() {
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
-        const { name } = data;
-        return name.toLowerCase().includes(e.target.value);
+
+        const { nome } = data;
+        return nome.toLowerCase().includes(e.target.value);
+
       });
       setDatatest(filterdata);
     }
   };
 
-  const handleSubmit = (e: any) => {
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const { value, defaultValue } = e.target.user;
-    dataInit.map(data => {
-      if (data.name == defaultValue) {
-        data.name = value;
-      }
-    });
-    setIsEdit(false);
+    const { id, user, device } = e.target;
+
+    if (user.value == user.defaultValue && device.value == device.defaultValue) {
+      setIsEdit(false);
+    } else {
+      await axios
+        .put(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
+          id: id.value,
+          nome: device.value,
+          usuario: user.value
+        })
+        .then(() => {
+          window.location.reload();
+          setErrorMessage('');
+        })
+        .catch(err => {
+          setErrorMessage(err.response.data.message);
+          setIsEdit(false);
+        });
+    }
+    
   };
 
-  const deleteData = (e: any) => {
+  const deleteData = async (e: any) => {
     const { id } = e.target;
+    await axios
+      .delete(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
+        data: { id: id }
+      })
+      .then(() => {
+        window.location.reload();
+        setErrorMessage('');
+      })
+      .catch(err => {
+        setErrorMessage(err.response.data.message);
+      });
 
-    let result = dataTest.filter(data => {
-      return data.name != id;
-    });
-    setDatatest(result);
-    setDataInit(result);
   };
   if (status === 'authenticated')
     return (
@@ -106,10 +160,20 @@ export default function Home() {
               type="text"
             />
           </div>
-          <div className={titleContainer()}>
-            <div className={idArea()}>ID: </div>
-            <div className={userArea()}>Usuario:</div>
 
+          <div className={errorarea()}>
+            {' '}
+            {errorMessage != '' ? (
+              <div>{errorMessage}</div>
+            ) : (
+              <div></div>
+            )}{' '}
+          </div>
+
+          <div className={titleContainer()}>
+            <div className={userArea()}>Usuario:</div>
+            <div className={DeviceArea()}>Dispositivo: </div>
+            <div className={localeArea()}>Localização:</div>
             <div className={actionArea()}>Ação:</div>
 
           </div>
@@ -121,7 +185,7 @@ export default function Home() {
             <div className={mainContainer()}>
               {dataTest.map((data): any => (
                 <div key={data.id} className={dataContainer()}>
-                  <div className={idArea()}>{data.id} </div>
+
                   {isEdit && data.id == catchId ? (
                     <div className={userEditArea()}>
                       <form
@@ -133,9 +197,27 @@ export default function Home() {
                             id="user"
                             type="text"
                             name="user"
-                            defaultValue={data.name}
+
+                            defaultValue={data.usuario}
                           />
                         </div>
+                        <div className={inputArea()}>
+                          <Input
+                            id="device"
+                            type="text"
+                            name="device"
+                            defaultValue={data.nome}
+                          />
+                        </div>
+
+                        <Input
+                          id="id"
+                          type="hidden"
+                          name="id"
+                          defaultValue={data.id}
+                        />
+
+
                         <div className={buttonArea()}>
                           <Button
                             id="button"
@@ -146,35 +228,44 @@ export default function Home() {
                       </form>
                     </div>
                   ) : (
-                    <div className={userArea()}>{data.name}</div>
+
+                    <div className={clientArea()}>
+                      <div className={userDataArea()}>
+                        {data.usuario}
+                      </div>
+                      <div className={DeviceDataArea()}>
+                        {data.nome}{' '}
+                      </div>
+                    </div>
                   )}
+
+                  <div className={localeArea()}>
+                    <Link href="#">veja aqui sua localização</Link>
+                  </div>
                   <div className={actionArea()}>
+                    <Image
+                      src="/../public/images/editar.png"
+                      alt="editar"
+                      width={35}
+                      height={35}
+                      quality={40}
+                      className={icon()}
+                      onClick={() => {
+                        setIsEdit(true);
+                        setCatchId(data.id);
+                      }}
+                    />
 
-               
-                      <Image
-                        src="/../public/images/editar.png"
-                        alt="editar"
-                        width={35}
-                        height={35}
-                        quality={40}
-                        className={icon()}
-                        onClick={() => {
-                          setIsEdit(true);
-                          setCatchId(data.id);
-                        }}
-
-                     />
-  
-                      <Image
-                        src="/../public/images/delete.png"
-                        alt="deletar"
-                        width={30}
-                        height={30}
-                        quality={40}
-                        className={icon()}
-                        id={data.name}
-                        onClick={deleteData}
-                      />
+                    <Image
+                      src="/../public/images/delete.png"
+                      alt="deletar"
+                      width={30}
+                      height={30}
+                      quality={40}
+                      className={icon()}
+                      id={data.id}
+                      onClick={deleteData}
+                    />
 
                   </div>
                 </div>
@@ -184,6 +275,7 @@ export default function Home() {
         </div>
       </div>
     );
-  return <div>Loading</div>;
+
+  return <Loading />;
 
 }

@@ -18,7 +18,7 @@ const sucessarea = cva([
 ]);
 
 const container = cva([
-  'flex flex-col text-white w-3/4 p-10 h-3/4 bg-violet-900 rounded-xl'
+  'flex flex-col text-white w-3/4 p-10 h-3/4 bg-violet-900 rounded-xl sm:w-full'
 ]);
 const title = cva(['text-center text-white text-xl mb-10']);
 

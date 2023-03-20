@@ -5,8 +5,11 @@ import { useEffect } from 'react';
 import Navbar from 'src/components/Navbar';
 import ReportForm from 'src/components/reportForm';
 
-const container = cva(['flex']);
-const bgContainer = cva(['ml-44 md:ml-20 mt-10 w-3/4']);
+import Loading from 'src/components/Loading';
+
+const container = cva(['flex sm:flex-col']);
+const bgContainer = cva(['ml-44 md:ml-20 mt-10 w-3/4 sm:w-full sm:ml-0']);
+
 export default function GenerateReports() {
   const { status } = useSession();
   useEffect(() => {
@@ -27,5 +30,7 @@ export default function GenerateReports() {
       </div>
     );
 
-  return <div>Loading</div>;
+
+  return <Loading />;
+
 }
