@@ -24,6 +24,7 @@ export default async function handler(
     const allDevices = await getDevices();
     const allDevicesFormated = getAllBuilder(allDevices);
     try {
+
       res.status(200).send({ data: allDevicesFormated }); 
     } catch (error: any) {
       res.status(500).send({ message: error.message }); 
