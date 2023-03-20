@@ -69,10 +69,8 @@ export default function Home() {
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
+        setDataInit(res.data.data);
         setErrorMessage('');
-      })
-      .then(() => {
-        setDataInit(dataTest);
       })
       .catch(() => {
         setErrorMessage('algo deu errado tente novamente');
@@ -89,6 +87,7 @@ export default function Home() {
 
   const searchData = (e: any) => {
     if (e.target.value == '') {
+    
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
