@@ -6,9 +6,11 @@ import Input from 'src/components/inputs/input';
 import Button from 'src/components/inputs/button';
 import Image from 'next/image';
 import Head from 'next/head';
+
 import Loading from 'src/components/Loading';
 import Link from 'next/link';
 import axios from 'axios';
+
 
 const container = cva(['text-white flex sm:flex-col']);
 const BgContainer = cva([
@@ -69,6 +71,7 @@ export default function Home() {
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
+
         setDataInit(res.data.data);
         setErrorMessage('');
       })
@@ -87,12 +90,14 @@ export default function Home() {
 
   const searchData = (e: any) => {
     if (e.target.value == '') {
+
     
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
+
       });
       setDatatest(filterdata);
     }
@@ -136,6 +141,7 @@ export default function Home() {
       .catch(err => {
         setErrorMessage(err.response.data.message);
       });
+
   };
   if (status === 'authenticated')
     return (
@@ -154,6 +160,7 @@ export default function Home() {
               type="text"
             />
           </div>
+
           <div className={errorarea()}>
             {' '}
             {errorMessage != '' ? (
@@ -168,6 +175,7 @@ export default function Home() {
             <div className={DeviceArea()}>Dispositivo: </div>
             <div className={localeArea()}>Localização:</div>
             <div className={actionArea()}>Ação:</div>
+
           </div>
           {dataTest.length === 0 ? (
             <div className={arrayEmpty()}>
@@ -177,6 +185,7 @@ export default function Home() {
             <div className={mainContainer()}>
               {dataTest.map((data): any => (
                 <div key={data.id} className={dataContainer()}>
+
                   {isEdit && data.id == catchId ? (
                     <div className={userEditArea()}>
                       <form
@@ -217,6 +226,7 @@ export default function Home() {
                       </form>
                     </div>
                   ) : (
+
                     <div className={clientArea()}>
                       <div className={userDataArea()}>
                         {data.usuario}
@@ -254,6 +264,7 @@ export default function Home() {
                       id={data.id}
                       onClick={deleteData}
                     />
+
                   </div>
                 </div>
               ))}
@@ -262,5 +273,7 @@ export default function Home() {
         </div>
       </div>
     );
+
   return <Loading />;
+
 }
