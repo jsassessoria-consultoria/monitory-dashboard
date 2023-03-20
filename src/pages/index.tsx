@@ -11,6 +11,7 @@ import Loading from 'src/components/Loading';
 import Link from 'next/link';
 import axios from 'axios';
 
+
 const container = cva(['text-white flex sm:flex-col']);
 const BgContainer = cva([
   'flex flex-col w-1/2 ml-44 md:ml-20 sm:w-full sm:ml-0'
@@ -70,10 +71,9 @@ export default function Home() {
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
+
+        setDataInit(res.data.data);
         setErrorMessage('');
-      })
-      .then(() => {
-        setDataInit(dataTest);
       })
       .catch(() => {
         setErrorMessage('algo deu errado tente novamente');
@@ -90,10 +90,11 @@ export default function Home() {
 
   const searchData = (e: any) => {
     if (e.target.value == '') {
+
+    
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
-
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
 
@@ -101,7 +102,6 @@ export default function Home() {
       setDatatest(filterdata);
     }
   };
-
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -197,7 +197,6 @@ export default function Home() {
                             id="user"
                             type="text"
                             name="user"
-
                             defaultValue={data.usuario}
                           />
                         </div>
@@ -216,7 +215,6 @@ export default function Home() {
                           name="id"
                           defaultValue={data.id}
                         />
-
 
                         <div className={buttonArea()}>
                           <Button

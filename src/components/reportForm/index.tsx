@@ -171,7 +171,6 @@ const ReportForm = () => {
             />
           </CustomProvider>
         </div>
-
         <Input
           placeholder="Pesquise um usuario"
           id="search"
