@@ -24,6 +24,27 @@ export async function updateOneTempoMonitorado(id: string) {
   });
 }
 
+export async function backupUpdateOneTempoMonitorado(
+  id: string,
+  tempoSomado: number
+) {
+  return prisma.tempoMonitorado.update({
+    where: { id },
+    data: { tempo: { increment: tempoSomado } }
+  });
+}
+
+export async function backupCreateOneTempoMonitorado(
+  date: string,
+  software: string,
+  dispositivo_id: string,
+  tempo: number
+) {
+  return prisma.tempoMonitorado.create({
+    data: { date, software, dispositivo_id, tempo }
+  });
+}
+
 export async function createOneTempoMonitorado(
   date: string,
   software: string,

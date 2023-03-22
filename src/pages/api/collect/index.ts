@@ -8,6 +8,7 @@ import {
 import { schemaValidator } from 'src/middleware/schemaValidator';
 import { collectSchema } from 'src/schemas/collectSchema';
 import { dateFormatter } from 'src/utils/api/dateFormatter';
+import { removeBearerTokenPrefix } from 'src/utils/api/removeBearerTokenPrefix';
 import { removeDuplicates } from 'src/utils/api/removeDuplicates';
 
 export default async function handler(
@@ -28,58 +29,58 @@ export default async function handler(
 
     const { token } = req.headers;
     if (!token) {
-      res
-        .status(401)
-        .json({
-          message:
-            'Necessário enviar Token do usuário nos HEADERS da requisição com chave: "token"'
-        });
+      res.status(401).json({
+        message:
+          'Necessário enviar Token do usuário nos HEADERS da requisição com chave: "token"'
+      });
       return;
     }
-
-    const hasToken = await getUserToken(String(token));
+    const tokenWoBearer = removeBearerTokenPrefix(String(token));
+    const hasToken = await getUserToken(tokenWoBearer);
     if (!hasToken) {
       res
         .status(401)
-        .json({ message: `O token: ${hasToken} é inválido` });
+        .json({ message: `O token: ${token} é inválido` });
       return;
     }
 
     const uniqueValues = removeDuplicates(processes);
     const todayDate = dateFormatter(new Date());
 
-    uniqueValues.forEach(async process => {
-      const hasTempoMonitorado = await getOneTempoMonitorado(
-        todayDate,
-        hasToken.dispositivo_id,
-        process
-      );
+    try {
+      uniqueValues.forEach(async process => {
+        const hasTempoMonitorado = await getOneTempoMonitorado(
+          todayDate,
+          hasToken.dispositivo_id,
+          process
+        );
 
-      if (hasTempoMonitorado) {
-        try {
-          await updateOneTempoMonitorado(hasTempoMonitorado.id);
-        } catch (error: any) {
-          throw new Error();
+        if (hasTempoMonitorado) {
+          try {
+            await updateOneTempoMonitorado(hasTempoMonitorado.id);
+          } catch (error: any) {
+            throw new Error();
+          }
+        } else {
+          try {
+            await createOneTempoMonitorado(
+              todayDate,
+              process,
+              hasToken.dispositivo_id
+            );
+          } catch (error: any) {
+            throw new Error();
+          }
         }
-      } else {
-        try {
-          await createOneTempoMonitorado(
-            todayDate,
-            process,
-            hasToken.dispositivo_id
-          );
-        } catch (error: any) {
-          throw new Error();
-        }
-      }
-    });
-    return res
-      .status(200)
-      .json({
+      });
+      return res.status(200).json({
         data: hasToken,
         message: 'Processos atualizados',
         processes: uniqueValues
       });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
   } else {
     res
       .status(500)
