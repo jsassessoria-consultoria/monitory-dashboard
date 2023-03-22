@@ -4,6 +4,6 @@ export function generateToken(): string {
   return v4();
 }
 
-export function validateToken(token: string): boolean {
+export function validateToken(token: any): boolean {
   return validate(token);
 }
