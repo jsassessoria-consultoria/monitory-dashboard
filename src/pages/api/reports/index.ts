@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getOnlyIdDevice } from 'src/lib/prisma/devices';
 import { getTempoMonitorado } from 'src/lib/prisma/tempoMonitorado';
 import { schemaValidator } from 'src/middleware/schemaValidator';
 import { pdfSchema } from 'src/schemas/pdfSchema';
@@ -15,6 +16,15 @@ export default async function handler(
     const validateBody = await schemaValidator(pdfSchema, req.body);
     if (validateBody.errors) {
       res.status(406).json({ message: validateBody.errors });
+      return;
+    }
+
+    try {
+      await getOnlyIdDevice(id);
+    } catch (error) {
+      res
+        .status(404)
+        .json({ message: 'Não existe dispositivo com Id: ' + id });
       return;
     }
 
