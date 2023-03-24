@@ -6,6 +6,58 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Usuario_Web {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  email      String   @unique
+  senha      String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@map("usuarios_web")
+}
+
+model Dispositivo {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  usuario         String
+  nome            String
+  lat             String?
+  long            String?
+  isAccuracy      Boolean?
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @default(now())
+  Token           Token[]
+  TempoMonitorado TempoMonitorado[]
+
+  @@unique([nome, usuario])
+  @@map("dispositivos")
+}
+
+model Token {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  token          String
+  dispositivo    Dispositivo @relation(fields: [dispositivo_id], references: [id])
+  dispositivo_id String      @db.ObjectId
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @default(now())
+
+  @@map("token")
+}
+
+model TempoMonitorado {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  tempo      Int      @default(10)
+  date       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  software String
+
+  dispositivo    Dispositivo @relation(fields: [dispositivo_id], references: [id])
+  dispositivo_id String      @db.ObjectId
+
+  @@map("tempo_monitorado")
 }
