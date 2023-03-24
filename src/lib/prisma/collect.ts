@@ -24,6 +24,17 @@ export async function updateOneTempoMonitorado(id: string) {
   });
 }
 
+export async function updateLocation(id: string, geolocation: any) {
+  return prisma.dispositivo.update({
+    where: { id },
+    data: {
+      isAccuracy: geolocation.isAccuracy,
+      lat: geolocation.lat,
+      long: geolocation.long
+    }
+  });
+}
+
 export async function backupUpdateOneTempoMonitorado(
   id: string,
   tempoSomado: number
@@ -50,7 +61,43 @@ export async function createOneTempoMonitorado(
   software: string,
   dispositivo_id: string
 ) {
+  try {
+    return await prisma.tempoMonitorado.create({
+      data: { date, software, dispositivo_id, tempo: 10 }
+    });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+/* export async function createOneTempoMonitorado(
+  date: string,
+  software: string,
+  dispositivo_id: string
+) {
   return prisma.tempoMonitorado.create({
     data: { date, software, dispositivo_id, tempo: 10 }
   });
-}
+} */
+
+/* export async function createOneTempoMonitoradoAndLocation(
+  date: string,
+  software: string,
+  dispositivo_id: string,
+  lat: string | null = null,
+  long: string | null = null,
+  isAccuracy: boolean | null = null
+) {
+  try {
+    return await prisma.$transaction(async tx => {
+      await tx.tempoMonitorado.create({
+        data: { date, software, dispositivo_id, tempo: 10 }
+      });
+      await tx.localizacao.create({
+        data: { lat, long, isAccuracy, dispositivo_id }
+      });
+    });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+} */

@@ -24,7 +24,9 @@ model Dispositivo {
   id              String            @id @default(auto()) @map("_id") @db.ObjectId
   usuario         String
   nome            String
-  localizacao     String
+  lat             String?
+  long            String?
+  isAccuracy      Boolean?
   created_at      DateTime          @default(now())
   updated_at      DateTime          @default(now())
   Token           Token[]

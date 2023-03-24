@@ -3,6 +3,7 @@ import {
   createOneTempoMonitorado,
   getOneTempoMonitorado,
   getUserToken,
+  updateLocation,
   updateOneTempoMonitorado
 } from 'src/lib/prisma/collect';
 import { schemaValidator } from 'src/middleware/schemaValidator';
@@ -16,7 +17,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    const { processes } = req.body;
+    const { processes, geolocation } = req.body;
 
     const validateBody = await schemaValidator(
       collectSchema,
@@ -47,6 +48,18 @@ export default async function handler(
     const uniqueValues = removeDuplicates(processes);
     const todayDate = dateFormatter(new Date());
 
+    if (
+      geolocation.lat !== null &&
+      geolocation.long !== null &&
+      geolocation.isAccuracy !== null
+    ) {
+      try {
+        await updateLocation(hasToken.dispositivo_id, geolocation);
+      } catch (error) {
+        throw new Error();
+      }
+    }
+
     try {
       uniqueValues.forEach(async process => {
         const hasTempoMonitorado = await getOneTempoMonitorado(
@@ -62,15 +75,11 @@ export default async function handler(
             throw new Error();
           }
         } else {
-          try {
-            await createOneTempoMonitorado(
-              todayDate,
-              process,
-              hasToken.dispositivo_id
-            );
-          } catch (error: any) {
-            throw new Error();
-          }
+          await createOneTempoMonitorado(
+            todayDate,
+            process,
+            hasToken.dispositivo_id
+          );
         }
       });
       return res.status(200).json({
