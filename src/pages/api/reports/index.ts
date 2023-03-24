@@ -28,7 +28,7 @@ export default async function handler(
       reportsBeetweenDates
     );
 
-    res.status(200).json({ reportsJson });
+    res.status(200).json({ data: reportsJson });
   } else {
     res
       .status(500)
