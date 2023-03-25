@@ -6,6 +6,8 @@ type TitleReports = {
   fontSize: number;
   bold: boolean;
   margin: number[];
+  color: string;
+  alignment: string;
 };
 function CreateReports(reports: any, user: any, date: any) {
   pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -26,52 +28,67 @@ function CreateReports(reports: any, user: any, date: any) {
     dateEndArray[0];
   const reportTitle: TitleReports[] = [
     {
-      text: 'Monitoramento do dia: ' + textDate,
-      fontSize: 15,
+
+      text: 'ODS SAURON',
+      fontSize: 25,
+      color: '#43159D',
       bold: true,
-      margin: [15, 20, 0, 70] // left, top, right, bottom
-    }
+      margin: [15, 20, 0, 70],
+      alignment: 'center'
+    },
+   
   ];
   function generateColumns(count: number) {
     const dataColumn = reports[count].map((subreport: any) => {
-      let minutos = ( subreport.tempo / 60000 ) % 60;
-      let horas = subreport.tempo / 3600000; 
-      
-      let tempo:string = String(horas.toFixed()).padStart(2, '0') + ' horas e ' + String(minutos.toFixed()).padStart(2, '0') + ' minutos';
-      
+      let minutos = (subreport.tempo / 60000) % 60;
+      let horas = subreport.tempo / 3600000;
+
+      let tempo: string =
+        String(horas.toFixed()).padStart(2, '0') +
+        ' horas e ' +
+        String(minutos.toFixed()).padStart(2, '0') +
+        ' minutos';
+
+
       return [
         {
           text: subreport.nome,
           style: 'tableHeader',
-          fontSize: 15,
+
+          fontSize: 12,
           margin: [0, 2, 0, 2]
         },
         {
           text: tempo,
           style: 'tableHeader',
-          fontSize: 15,
+
+          fontSize: 12,
           margin: [0, 2, 0, 2]
         }
       ];
     });
     return dataColumn;
   }
-  let i:number = -1;
+
+  let i: number = -1;
+  
   const data = reports.map((report: any) => {
     let dateArray = report[0].data.split('-');
     let ReportDate =
       dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
-    
+
+
     i = i + 1;
-    let dataSoftware:any = generateColumns(i);
-    
+    let dataSoftware: any = generateColumns(i);
+
     return [
+      
       {
         text: 'relatorio do dia ' + ReportDate,
         style: 'header',
         bold: true,
         margin: [0, 20, 0, 5],
-        fontSize: 20
+        fontSize: 15
       },
       {
         table: {
@@ -82,12 +99,14 @@ function CreateReports(reports: any, user: any, date: any) {
               {
                 text: 'Softwares',
                 style: 'tableHeader',
-                fontSize: 15
+
+                fontSize: 12
               },
               {
                 text: 'Tempo de execução',
                 style: 'tableHeader',
-                fontSize: 15
+
+                fontSize: 12
               }
             ],
             ...dataSoftware
@@ -96,9 +115,16 @@ function CreateReports(reports: any, user: any, date: any) {
         layout: 'headerLineOnly'
       }
     ];
-    
+
   });
   const details: any = [
+    {
+      text: 'Monitoramento do dia: ' + textDate,
+      style: 'header',
+      alignment: 'center',
+      bold: true,
+      margin: [0, 0, 0, 5]
+    },
     {
       text: 'Informações sobre o aparelho monitorado: ',
       style: 'header',
@@ -106,16 +132,17 @@ function CreateReports(reports: any, user: any, date: any) {
       margin: [0, 0, 0, 5]
     },
     {
-      text: 'id do usuário: ' + user.id.toString(),
+
+      text: 'nome do usuário: ' + user.usuario,
       style: 'header'
     },
     {
-      text: 'nome do usuário: ' + user.name,
+      text: 'nome do dispositivo: ' + user.nome,
       style: 'header',
       margin: [0, 0, 0, 35]
     },
-    ...data,
-    
+    ...data
+
   ];
   function Footer(currentPage: any, pageCount: any) {
     return [
@@ -123,7 +150,9 @@ function CreateReports(reports: any, user: any, date: any) {
         text: currentPage + '/' + pageCount,
         aligniment: 'right',
         fontSize: 9,
-        margin: [5, 10, 20, 0] // left, top, right, bottom
+
+        margin: [5, 40, 20, 0] // left, top, right, bottom
+
       }
     ];
   }
@@ -137,7 +166,7 @@ function CreateReports(reports: any, user: any, date: any) {
   };
 
   pdfMake.createPdf(docDefinitions).download();
-  
+
 }
 
 export default CreateReports;

@@ -12,13 +12,17 @@ import isAfter from 'date-fns/isAfter';
 
 import CreateReports from '../CreateReports';
 
+import CatchUser from '../CatchUser';
+
+
 const errorarea = cva(['bg-red-600 rounded-lg mb-10 text-center']);
 const sucessarea = cva([
   'bg-green-600 rounded-lg mt-10 text-center'
 ]);
 
 const container = cva([
-  'flex flex-col text-white w-3/4 p-10 h-3/4 bg-violet-900 rounded-xl sm:w-full'
+
+  'flex flex-col text-white w-3/4 p-10 h-max bg-violet-900 rounded-xl sm:w-full'
 ]);
 const title = cva(['text-center text-white text-xl mb-10']);
 
@@ -33,8 +37,12 @@ const dataContainerSelect = cva([
   'bg-violet-600  h-12 flex hover:bg-violet-600 '
 ]);
 
-const idArea = cva(['text-white font-medium w-1/4 mt-3 ml-2 font-bold']);
-const userArea = cva(['text-white font-medium w-1/2 mt-3 font-bold']);
+
+const idArea = cva(['text-white font-medium w-1/2 mt-3  font-bold']);
+const userArea = cva([
+  'text-white font-medium w-1/2 mt-3 ml-5 font-bold'
+]);
+
 
 const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
@@ -49,54 +57,42 @@ const label = cva([
 
 
 type User = {
-  id: number;
-  name: string;
+  id: string;
+  usuario: string;
+  nome: string;
+  localizacao: any | null;
 };
 
-
 const ReportForm = () => {
-
-  const [dataTest, setDatatest] = useState<User[]>([
-    { id: 12345, name: 'Airi Satou' }, //esses dados estão simulando o recebimento dos usuarios no back-end
-    { id: 12346, name: 'Angelica Ramos' },
-    { id: 12347, name: 'Ashton Cox' },
-    { id: 12348, name: 'Bradley Greer' },
-    { id: 12349, name: 'Brenden Wagner' },
-    { id: 15342, name: 'Caesar Vance' },
-    { id: 16343, name: 'Cara Stevens' },
-    { id: 17341, name: 'Cedric Kelly' },
-    { id: 14341, name: 'Gloria Little' },
-    { id: 19342, name: 'Jenette Caldwell' }
-  ]);
+  const [dataTest, setDatatest] = useState<User[]>([]);
   const [dataInit, setDataInit] = useState<User[]>([]);
-  const [idValue, setIdvalue] = useState<number>();
+  const [idValue, setIdvalue] = useState<string>();
+
   const [error, setError] = useState<String>();
   const [sucess, setSucess] = useState<String>();
 
   const [dateValue, setDateValue] = useState<DateRange>();
-  const [devices, setDevices] = useState<any[]>([[]]); // estado criado so para testar renderização
-  const Currentdate = new Date();
-  useEffect(() => {
-    setDataInit(dataTest);
-    setDevices([
-      [
-        { nome: 'spotify.exe', tempo: 8280000, data: '2020-05-25' },
-        { nome: 'youtube.exe', tempo: 8280000, data: '2020-05-25' },
-        { nome: 'chrome.exe', tempo: 8280000, data: '2020-05-25' }
-      ],
-      [
-        { nome: 'spotify.exe', tempo: 9980000, data: '2020-05-26' },
-        { nome: 'youtube.exe', tempo: 99280000, data: '2020-05-26' },
-        { nome: 'chrome.exe', tempo: 9980000, data: '2020-05-26' }
-      ],
 
-      [
-        { nome: 'spotify.exe', tempo: 8880000, data: '2020-05-27' },
-        { nome: 'youtube.exe', tempo: 8880000, data: '2020-05-27' },
-        { nome: 'chrome.exe', tempo: 8880000, data: '2020-05-27' }
-      ]
-    ]); //estrutura de dados deve ser retorna do backend dessa forma um array dado em dias
-  }, [setDataInit]);
+  const Currentdate = new Date();
+
+  async function fetchData() {
+    await axios
+      .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
+      .then(res => {
+        setDatatest(res.data.data);
+
+        setDataInit(res.data.data);
+        setError('');
+      })
+      .catch(() => {
+        setError('algo deu errado, Tente novamente!!');
+      });
+  }
+
+  useEffect(() => {
+    fetchData();
+  });
+
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -109,20 +105,30 @@ const ReportForm = () => {
 
     const { user } = e.target;
 
+    const chosenUser = CatchUser(user.value, dataTest); // pegando dados do usuario escolhido para o relatorio
+
+
     if (user.value == '' || date == '') {
       setSucess('');
       setError('o usuário e/ou data não foram selecionados!!');
     } else {
       axios
-        .post('#', { id: user.value, date: date })
-        .then(() => {
-          setError('');
-          setSucess('relatorio solicitado com sucesso'); //ficara essa mensagem por enquanto para representar o retorno do backEnd mas posteriormente ela sera substituida
-          CreateReports(devices, dataTest[0], date); // device sera substituido por res.data.software e res.data.user
+
+        .post(process.env.NEXT_PUBLIC_API_ROUTE + '/reports', {
+          id: user.value,
+          startDate: date.startDate,
+          endDate: date.endDate
         })
-        .catch(() => {
+        .then(res => {
+          setError('');
+
+          setSucess('relatorio solicitado com sucesso'); //ficara essa mensagem por enquanto para representar o retorno do backEnd mas posteriormente ela sera substituida
+          CreateReports(res.data.data, chosenUser, date); // device sera substituido por res.data.software e res.data.user
+        })
+        .catch((err) => {
           setSucess('');
-          setError('Relatorio não enviado tente novamente');
+          setError(err.response.data.message);
+
         });
     }
   };
@@ -133,8 +139,10 @@ const ReportForm = () => {
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
-        const { name } = data;
-        return name.toLowerCase().includes(e.target.value);
+
+        const { nome } = data;
+        return nome.toLowerCase().includes(e.target.value);
+
       });
       setDatatest(filterdata);
     }
@@ -192,8 +200,9 @@ const ReportForm = () => {
         )}
 
         <div className={titleContainer()}>
-          <div className={idArea()}>ID: </div>
+<
           <div className={userArea()}>Usuario:</div>
+          <div className={idArea()}>Dispositivo: </div>
         </div>
         {dataTest.length === 0 ? (
           <div className={arrayEmpty()}>
@@ -204,7 +213,9 @@ const ReportForm = () => {
             <input
               id="user"
               name="user"
-              value={idValue}
+
+              value={idValue} //pegar id do user
+
               type="hidden"
               required
             />
@@ -220,8 +231,9 @@ const ReportForm = () => {
                   setIdvalue(data.id);
                 }}
               >
-                <div className={idArea()}>{data.id} </div>
-                <div className={userArea()}>{data.name}</div>
+
+                <div className={userArea()}>{data.usuario}</div>
+                <div className={idArea()}>{data.nome} </div>
               </div>
             ))}
           </div>
