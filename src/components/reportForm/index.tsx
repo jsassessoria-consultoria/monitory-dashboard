@@ -11,7 +11,9 @@ import ptBr from 'rsuite/locales/pt_BR';
 import isAfter from 'date-fns/isAfter';
 
 import CreateReports from '../CreateReports';
+
 import CatchUser from '../CatchUser';
+
 
 const errorarea = cva(['bg-red-600 rounded-lg mb-10 text-center']);
 const sucessarea = cva([
@@ -19,6 +21,7 @@ const sucessarea = cva([
 ]);
 
 const container = cva([
+
   'flex flex-col text-white w-3/4 p-10 h-max bg-violet-900 rounded-xl sm:w-full'
 ]);
 const title = cva(['text-center text-white text-xl mb-10']);
@@ -28,15 +31,18 @@ const titleContainer = cva(['bg-violet-700  h-12 flex font-bold']);
 const mainContainer = cva(['overflow-y-scroll h-1/4 ']);
 const dataContainer = cva([
   'bg-violet-800  h-12 flex hover:bg-violet-600 text-sm'
+
 ]);
 const dataContainerSelect = cva([
   'bg-violet-600  h-12 flex hover:bg-violet-600 '
 ]);
 
+
 const idArea = cva(['text-white font-medium w-1/2 mt-3  font-bold']);
 const userArea = cva([
   'text-white font-medium w-1/2 mt-3 ml-5 font-bold'
 ]);
+
 
 const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
@@ -49,6 +55,7 @@ const label = cva([
   'block mb-2 ml-2 text-lg font-medium text-white dark:text-white'
 ]);
 
+
 type User = {
   id: string;
   usuario: string;
@@ -60,10 +67,12 @@ const ReportForm = () => {
   const [dataTest, setDatatest] = useState<User[]>([]);
   const [dataInit, setDataInit] = useState<User[]>([]);
   const [idValue, setIdvalue] = useState<string>();
+
   const [error, setError] = useState<String>();
   const [sucess, setSucess] = useState<String>();
 
   const [dateValue, setDateValue] = useState<DateRange>();
+
   const Currentdate = new Date();
 
   async function fetchData() {
@@ -84,6 +93,7 @@ const ReportForm = () => {
     fetchData();
   });
 
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     let date: any;
@@ -94,13 +104,16 @@ const ReportForm = () => {
     }
 
     const { user } = e.target;
+
     const chosenUser = CatchUser(user.value, dataTest); // pegando dados do usuario escolhido para o relatorio
+
 
     if (user.value == '' || date == '') {
       setSucess('');
       setError('o usuário e/ou data não foram selecionados!!');
     } else {
       axios
+
         .post(process.env.NEXT_PUBLIC_API_ROUTE + '/reports', {
           id: user.value,
           startDate: date.startDate,
@@ -115,28 +128,35 @@ const ReportForm = () => {
         .catch((err) => {
           setSucess('');
           setError(err.response.data.message);
+
         });
     }
   };
+
 
   const searchUsers = (e: any) => {
     if (e.target.value == '') {
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
+
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
+
       });
       setDatatest(filterdata);
     }
   };
 
+
   const handleDate = (value: any) => {
     setDateValue(value);
+
   };
 
   return (
     <div className={container()}>
+
       <div className={title()}>Pesquise seus relatorios aqui</div>
       <form onSubmit={handleSubmit}>
         <div className={dateTitle()}>
@@ -180,6 +200,7 @@ const ReportForm = () => {
         )}
 
         <div className={titleContainer()}>
+<
           <div className={userArea()}>Usuario:</div>
           <div className={idArea()}>Dispositivo: </div>
         </div>
@@ -192,7 +213,9 @@ const ReportForm = () => {
             <input
               id="user"
               name="user"
+
               value={idValue} //pegar id do user
+
               type="hidden"
               required
             />
@@ -208,12 +231,14 @@ const ReportForm = () => {
                   setIdvalue(data.id);
                 }}
               >
+
                 <div className={userArea()}>{data.usuario}</div>
                 <div className={idArea()}>{data.nome} </div>
               </div>
             ))}
           </div>
         )}
+
 
         <div className={buttonarea()}>
           <Button type="submit" title="Buscar Relatorio" />

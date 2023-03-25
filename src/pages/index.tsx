@@ -11,6 +11,7 @@ import Loading from 'src/components/Loading';
 import Link from 'next/link';
 import axios from 'axios';
 
+
 const container = cva(['text-white flex sm:flex-col']);
 const BgContainer = cva([
   'flex flex-col w-1/2 ml-44 md:ml-20 sm:w-full sm:ml-0'
@@ -33,10 +34,12 @@ const DeviceDataArea = cva([
   'text-white font-medium w-1/2 mt-3 font-bold'
 ]);
 const localeArea = cva([
+
   'text-white font-medium w-1/3 mt-3 font-bold'
 ]);
 const actionArea = cva([
   'text-white font-medium w-1/5 mt-3 flex font-bold'
+
 ]);
 const icon = cva(['hover:scale-150']);
 const userEditArea = cva(['font-medium w-1/2 flex ']);
@@ -54,9 +57,11 @@ type User = {
   id: string;
   usuario: string;
   nome: string;
+
   lat: any | null;
   long: any | null;
   isAccuracy: boolean;
+
 };
 
 export default function Home() {
@@ -66,6 +71,7 @@ export default function Home() {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [catchId, setCatchId] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>('');
+
 
   async function fetchData() {
     await axios
@@ -81,6 +87,7 @@ export default function Home() {
       });
   }
   useEffect(() => {
+
     fetchData();
 
     if (status === 'unauthenticated') {
@@ -95,6 +102,7 @@ export default function Home() {
       const filterdata = dataTest.filter(data => {
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
+
       });
       setDatatest(filterdata);
     }
@@ -104,10 +112,12 @@ export default function Home() {
     e.preventDefault();
     const { id, user, device } = e.target;
 
+
     if (
       user.value == user.defaultValue &&
       device.value == device.defaultValue
     ) {
+
       setIsEdit(false);
     } else {
       await axios
@@ -125,6 +135,7 @@ export default function Home() {
           setIsEdit(false);
         });
     }
+
   };
 
   const deleteData = async (e: any) => {
@@ -140,6 +151,7 @@ export default function Home() {
       .catch(err => {
         setErrorMessage(err.response.data.message);
       });
+
   };
   if (status === 'authenticated')
     return (
@@ -173,6 +185,7 @@ export default function Home() {
             <div className={DeviceArea()}>Dispositivo: </div>
             <div className={localeArea()}>Localização:</div>
             <div className={actionArea()}>Ação:</div>
+
           </div>
           {dataTest.length === 0 ? (
             <div className={arrayEmpty()}>
@@ -182,6 +195,7 @@ export default function Home() {
             <div className={mainContainer()}>
               {dataTest.map((data): any => (
                 <div key={data.id} className={dataContainer()}>
+
                   {isEdit && data.id == catchId ? (
                     <div className={userEditArea()}>
                       <form
@@ -222,6 +236,7 @@ export default function Home() {
                       </form>
                     </div>
                   ) : (
+
                     <div className={clientArea()}>
                       <div className={userDataArea()}>
                         {data.usuario}
@@ -232,6 +247,7 @@ export default function Home() {
                     </div>
                   )}
 
+
                   {data.lat == null ? (
                     <div className={localeArea()}>
                       Localização não disponivel
@@ -241,6 +257,7 @@ export default function Home() {
                       <Link href={`https://www.google.es/maps?q=${data.lat},${data.long}`}>veja aqui sua localização {data.isAccuracy == true ? ' (alta precisão)' : ' (baixa precisão)'}</Link>
                     </div>
                   )}
+
 
                   <div className={actionArea()}>
                     <Image
@@ -266,6 +283,7 @@ export default function Home() {
                       id={data.id}
                       onClick={deleteData}
                     />
+
                   </div>
                 </div>
               ))}
