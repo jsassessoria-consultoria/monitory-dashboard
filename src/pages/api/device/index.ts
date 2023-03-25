@@ -24,9 +24,9 @@ export default async function handler(
     const allDevices = await getDevices();
     const allDevicesFormated = getAllBuilder(allDevices);
     try {
-      res.status(200).send({ data: allDevicesFormated }); 
+      res.status(200).send({ data: allDevicesFormated });
     } catch (error: any) {
-      res.status(500).send({ message: error.message }); 
+      res.status(500).send({ message: error.message });
     }
   } else if (req.method === 'POST') {
     const { nome, usuario } = req.body;
@@ -54,7 +54,10 @@ export default async function handler(
 
     const generatedToken = generateToken();
     try {
-      await createDevice(req.body, generatedToken);
+      await createDevice(
+        { ...req.body, isAccuracy: null, lat: null, long: null },
+        generatedToken
+      );
       res.status(201).send({ data: { token: generatedToken } });
     } catch (error: any) {
       res.status(500).send({ message: error.message });

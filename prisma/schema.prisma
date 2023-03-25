@@ -25,7 +25,9 @@ model Dispositivo {
   id              String            @id @default(auto()) @map("_id") @db.ObjectId
   usuario         String
   nome            String
-  localizacao     String
+  lat             String?
+  long            String?
+  isAccuracy      Boolean?
   created_at      DateTime          @default(now())
   updated_at      DateTime          @default(now())
   Token           Token[]
@@ -48,25 +50,15 @@ model Token {
 
 model TempoMonitorado {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  tempo      Int
+  tempo      Int      @default(10)
+  date       String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  software    Software @relation(fields: [software_id], references: [id])
-  software_id String   @db.ObjectId
+  software String
 
   dispositivo    Dispositivo @relation(fields: [dispositivo_id], references: [id])
   dispositivo_id String      @db.ObjectId
 
   @@map("tempo_monitorado")
-}
-
-model Software {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  nome            String
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @default(now())
-  TempoMonitorado TempoMonitorado[]
-
-  @@map("software")
 }

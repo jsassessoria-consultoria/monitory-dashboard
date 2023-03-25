@@ -1,16 +1,16 @@
 import { prisma } from './db';
 
 export async function getDevices() {
-  return prisma.token.findMany({ include: { dispositivo: true } });
+  return prisma.dispositivo.findMany({ include: { Token: true } });
 }
 
 export async function getOneDeviceByNameAndUser(
   nome: string,
   usuario: string
 ) {
-  return prisma.dispositivo.findFirst({ 
+  return prisma.dispositivo.findFirst({
     where: { nome, usuario },
-    include: { Token: true } 
+    include: { Token: true }
   });
 }
 
@@ -61,6 +61,6 @@ export async function getOnlyIdDevice(id: string) {
   try {
     return await prisma.dispositivo.findFirst({ where: { id } });
   } catch (error) {
-    throw new Error(); 
+    throw new Error();
   }
 }

@@ -6,6 +6,7 @@ import Input from 'src/components/inputs/input';
 import Button from 'src/components/inputs/button';
 import Image from 'next/image';
 import Head from 'next/head';
+
 import Loading from 'src/components/Loading';
 import Link from 'next/link';
 import axios from 'axios';
@@ -32,10 +33,10 @@ const DeviceDataArea = cva([
   'text-white font-medium w-1/2 mt-3 font-bold'
 ]);
 const localeArea = cva([
-  'text-white font-medium w-1/4 mt-3 font-bold'
+  'text-white font-medium w-1/3 mt-3 font-bold'
 ]);
 const actionArea = cva([
-  'text-white font-medium w-1/4 mt-3 flex font-bold'
+  'text-white font-medium w-1/5 mt-3 flex font-bold'
 ]);
 const icon = cva(['hover:scale-150']);
 const userEditArea = cva(['font-medium w-1/2 flex ']);
@@ -53,7 +54,9 @@ type User = {
   id: string;
   usuario: string;
   nome: string;
-  localizacao: string;
+  lat: any | null;
+  long: any | null;
+  isAccuracy: boolean;
 };
 
 export default function Home() {
@@ -64,11 +67,12 @@ export default function Home() {
   const [catchId, setCatchId] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  async function fetchdata() {
+  async function fetchData() {
     await axios
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
+
         setDataInit(res.data.data);
         setErrorMessage('');
       })
@@ -77,8 +81,7 @@ export default function Home() {
       });
   }
   useEffect(() => {
-    setDataInit(dataTest); // o react hook ta reclamando mas isso sera removido mais tarde por um metodo axios para pegar os dados, esta aqui so para um teste de dados
-    fetchdata();
+    fetchData();
 
     if (status === 'unauthenticated') {
       window.location.href = '/auth/signIn';
@@ -87,7 +90,6 @@ export default function Home() {
 
   const searchData = (e: any) => {
     if (e.target.value == '') {
-    
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
@@ -102,7 +104,10 @@ export default function Home() {
     e.preventDefault();
     const { id, user, device } = e.target;
 
-    if (user.value == user.defaultValue && device.value == device.defaultValue) {
+    if (
+      user.value == user.defaultValue &&
+      device.value == device.defaultValue
+    ) {
       setIsEdit(false);
     } else {
       await axios
@@ -120,7 +125,6 @@ export default function Home() {
           setIsEdit(false);
         });
     }
-    
   };
 
   const deleteData = async (e: any) => {
@@ -154,6 +158,7 @@ export default function Home() {
               type="text"
             />
           </div>
+
           <div className={errorarea()}>
             {' '}
             {errorMessage != '' ? (
@@ -227,9 +232,16 @@ export default function Home() {
                     </div>
                   )}
 
-                  <div className={localeArea()}>
-                    <Link href="#">veja aqui sua localização</Link>
-                  </div>
+                  {data.lat == null ? (
+                    <div className={localeArea()}>
+                      Localização não disponivel
+                    </div>
+                  ) : (
+                    <div className={localeArea()}>
+                      <Link href={`https://www.google.es/maps?q=${data.lat},${data.long}`}>veja aqui sua localização {data.isAccuracy == true ? ' (alta precisão)' : ' (baixa precisão)'}</Link>
+                    </div>
+                  )}
+
                   <div className={actionArea()}>
                     <Image
                       src="/../public/images/editar.png"
@@ -262,5 +274,6 @@ export default function Home() {
         </div>
       </div>
     );
+
   return <Loading />;
 }
