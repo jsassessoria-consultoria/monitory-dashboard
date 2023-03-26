@@ -11,6 +11,7 @@ import Loading from 'src/components/Loading';
 import Link from 'next/link';
 import axios from 'axios';
 
+
 const container = cva(['text-white flex sm:flex-col']);
 const BgContainer = cva([
   'flex flex-col w-1/2 ml-44 md:ml-20 sm:w-full sm:ml-0'
@@ -33,10 +34,12 @@ const DeviceDataArea = cva([
   'text-white font-medium w-1/2 mt-3 font-bold'
 ]);
 const localeArea = cva([
+
   'text-white font-medium w-1/3 mt-3 font-bold'
 ]);
 const actionArea = cva([
   'text-white font-medium w-1/5 mt-3 flex font-bold'
+
 ]);
 const icon = cva(['hover:scale-150']);
 const userEditArea = cva(['font-medium w-1/2 flex ']);
@@ -57,6 +60,7 @@ type User = {
   lat: any | null;
   long: any | null;
   isAccuracy: boolean;
+
 };
 
 export default function Home() {
@@ -66,6 +70,7 @@ export default function Home() {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [catchId, setCatchId] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>('');
+
 
   async function fetchData() {
     axios
@@ -81,6 +86,7 @@ export default function Home() {
       });
   }
   useEffect(() => {
+
     fetchData();
 
     if (status === 'unauthenticated') {
@@ -108,6 +114,7 @@ export default function Home() {
       user.value == user.defaultValue &&
       device.value == device.defaultValue
     ) {
+
       setIsEdit(false);
     } else {
       axios
@@ -125,10 +132,12 @@ export default function Home() {
           setIsEdit(false);
         });
     }
+
   };
 
   const deleteData = async (e: any) => {
     const { id } = e.target;
+
     axios
       .delete(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
         data: { id: id }
@@ -222,6 +231,7 @@ export default function Home() {
                       </form>
                     </div>
                   ) : (
+
                     <div className={clientArea()}>
                       <div className={userDataArea()}>
                         {data.usuario}
@@ -232,6 +242,7 @@ export default function Home() {
                     </div>
                   )}
 
+
                   {data.lat == null ? (
                     <div className={localeArea()}>
                       Localização não disponivel
@@ -241,6 +252,7 @@ export default function Home() {
                       <Link href={`https://www.google.es/maps?q=${data.lat},${data.long}`}>veja aqui sua localização {data.isAccuracy == true ? ' (alta precisão)' : ' (baixa precisão)'}</Link>
                     </div>
                   )}
+
 
                   <div className={actionArea()}>
                     <Image
@@ -266,6 +278,7 @@ export default function Home() {
                       id={data.id}
                       onClick={deleteData}
                     />
+
                   </div>
                 </div>
               ))}

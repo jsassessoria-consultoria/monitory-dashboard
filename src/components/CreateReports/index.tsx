@@ -28,6 +28,7 @@ function CreateReports(reports: any, user: any, date: any) {
     dateEndArray[0];
   const reportTitle: TitleReports[] = [
     {
+
       text: 'ODS SAURON',
       fontSize: 25,
       color: '#43159D',
@@ -48,16 +49,19 @@ function CreateReports(reports: any, user: any, date: any) {
         String(minutos.toFixed()).padStart(2, '0') +
         ' minutos';
 
+
       return [
         {
           text: subreport.nome,
           style: 'tableHeader',
+
           fontSize: 12,
           margin: [0, 2, 0, 2]
         },
         {
           text: tempo,
           style: 'tableHeader',
+
           fontSize: 12,
           margin: [0, 2, 0, 2]
         }
@@ -65,7 +69,9 @@ function CreateReports(reports: any, user: any, date: any) {
     });
     return dataColumn;
   }
+
   let i: number = -1;
+
   const data = reports.map((report: any) => {
     let dateArray = report[0].data.split('-');
     let ReportDate =
@@ -92,11 +98,13 @@ function CreateReports(reports: any, user: any, date: any) {
               {
                 text: 'Softwares',
                 style: 'tableHeader',
+
                 fontSize: 12
               },
               {
                 text: 'Tempo de execução',
                 style: 'tableHeader',
+
                 fontSize: 12
               }
             ],
@@ -106,6 +114,7 @@ function CreateReports(reports: any, user: any, date: any) {
         layout: 'headerLineOnly'
       }
     ];
+
   });
   const details: any = [
     {
@@ -122,6 +131,7 @@ function CreateReports(reports: any, user: any, date: any) {
       margin: [0, 0, 0, 5]
     },
     {
+
       text: 'nome do usuário: ' + user.usuario,
       style: 'header'
     },
@@ -131,6 +141,7 @@ function CreateReports(reports: any, user: any, date: any) {
       margin: [0, 0, 0, 35]
     },
     ...data
+
   ];
   function Footer(currentPage: any, pageCount: any) {
     return [
@@ -139,6 +150,7 @@ function CreateReports(reports: any, user: any, date: any) {
         aligniment: 'right',
         fontSize: 9,
         margin: [5, 40, 20, 0] // left, top, right, bottom
+
       }
     ];
   }
@@ -152,6 +164,7 @@ function CreateReports(reports: any, user: any, date: any) {
   };
 
   pdfMake.createPdf(docDefinitions).download();
+
 }
 
 export default CreateReports;

@@ -46,6 +46,7 @@ const SignUp = () => {
     const { email, confEmail, senha } = data;
     if (email == confEmail) {
       setErrorEmail(false);
+
       axios
         .post(process.env.NEXT_PUBLIC_API_ROUTE + '/signup', {
           email: email,
@@ -79,7 +80,9 @@ const SignUp = () => {
           aqui
         </div>
         <Image
+
           src="/images/grafico.png"
+
           alt="computador"
           width={400}
           height={100}

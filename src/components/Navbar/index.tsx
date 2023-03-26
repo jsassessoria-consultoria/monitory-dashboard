@@ -13,6 +13,7 @@ const linknav = cva([
   'flex font-bold text-lg hover:no-underline text-white ml-10 mb-5 hover:bg-white hover:text-black p-2 rounded sm:p-1 sm:text-base sm:ml-5'
 ]);
 const containerLinks = cva(['mt-12 inline-flex flex-col sm:flex sm:flex-row sm:mt-6']);
+
 const imageIcon = cva(['w-1/7 ml-2 sm:hidden']); 
 
 const Navbar = () => {
