@@ -68,7 +68,7 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   async function fetchData() {
-    await axios
+    axios
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
@@ -110,7 +110,7 @@ export default function Home() {
     ) {
       setIsEdit(false);
     } else {
-      await axios
+      axios
         .put(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
           id: id.value,
           nome: device.value,
@@ -129,7 +129,7 @@ export default function Home() {
 
   const deleteData = async (e: any) => {
     const { id } = e.target;
-    await axios
+    axios
       .delete(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
         data: { id: id }
       })

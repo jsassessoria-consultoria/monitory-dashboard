@@ -53,7 +53,7 @@ type User = {
   id: string;
   usuario: string;
   nome: string;
-  localizacao: any | null;
+  
 };
 
 const ReportForm = () => {
@@ -67,7 +67,7 @@ const ReportForm = () => {
   const Currentdate = new Date();
 
   async function fetchData() {
-    await axios
+    axios
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
