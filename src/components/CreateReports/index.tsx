@@ -71,12 +71,11 @@ function CreateReports(reports: any, user: any, date: any) {
   }
 
   let i: number = -1;
-  
+
   const data = reports.map((report: any) => {
     let dateArray = report[0].data.split('-');
     let ReportDate =
       dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
-
 
     i = i + 1;
     let dataSoftware: any = generateColumns(i);
@@ -150,7 +149,6 @@ function CreateReports(reports: any, user: any, date: any) {
         text: currentPage + '/' + pageCount,
         aligniment: 'right',
         fontSize: 9,
-
         margin: [5, 40, 20, 0] // left, top, right, bottom
 
       }

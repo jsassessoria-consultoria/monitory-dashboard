@@ -16,7 +16,6 @@ const containerLinks = cva(['mt-12 inline-flex flex-col sm:flex sm:flex-row sm:m
 
 const imageIcon = cva(['w-1/7 ml-2 sm:hidden']); 
 
-
 const Navbar = () => {
   return (
     <div className={container()}>

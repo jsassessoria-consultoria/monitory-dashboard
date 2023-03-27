@@ -57,7 +57,6 @@ type User = {
   id: string;
   usuario: string;
   nome: string;
-
   lat: any | null;
   long: any | null;
   isAccuracy: boolean;
@@ -74,7 +73,7 @@ export default function Home() {
 
 
   async function fetchData() {
-    await axios
+    axios
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
@@ -102,7 +101,6 @@ export default function Home() {
       const filterdata = dataTest.filter(data => {
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
-
       });
       setDatatest(filterdata);
     }
@@ -112,7 +110,6 @@ export default function Home() {
     e.preventDefault();
     const { id, user, device } = e.target;
 
-
     if (
       user.value == user.defaultValue &&
       device.value == device.defaultValue
@@ -120,7 +117,7 @@ export default function Home() {
 
       setIsEdit(false);
     } else {
-      await axios
+      axios
         .put(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
           id: id.value,
           nome: device.value,
@@ -140,7 +137,8 @@ export default function Home() {
 
   const deleteData = async (e: any) => {
     const { id } = e.target;
-    await axios
+
+    axios
       .delete(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
         data: { id: id }
       })
@@ -151,7 +149,6 @@ export default function Home() {
       .catch(err => {
         setErrorMessage(err.response.data.message);
       });
-
   };
   if (status === 'authenticated')
     return (
@@ -185,7 +182,6 @@ export default function Home() {
             <div className={DeviceArea()}>Dispositivo: </div>
             <div className={localeArea()}>Localização:</div>
             <div className={actionArea()}>Ação:</div>
-
           </div>
           {dataTest.length === 0 ? (
             <div className={arrayEmpty()}>
@@ -195,7 +191,6 @@ export default function Home() {
             <div className={mainContainer()}>
               {dataTest.map((data): any => (
                 <div key={data.id} className={dataContainer()}>
-
                   {isEdit && data.id == catchId ? (
                     <div className={userEditArea()}>
                       <form

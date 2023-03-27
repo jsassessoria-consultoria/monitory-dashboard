@@ -14,7 +14,6 @@ import CreateReports from '../CreateReports';
 
 import CatchUser from '../CatchUser';
 
-
 const errorarea = cva(['bg-red-600 rounded-lg mb-10 text-center']);
 const sucessarea = cva([
   'bg-green-600 rounded-lg mt-10 text-center'
@@ -60,7 +59,7 @@ type User = {
   id: string;
   usuario: string;
   nome: string;
-  localizacao: any | null;
+
 };
 
 const ReportForm = () => {
@@ -76,7 +75,7 @@ const ReportForm = () => {
   const Currentdate = new Date();
 
   async function fetchData() {
-    await axios
+    axios
       .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
       .then(res => {
         setDatatest(res.data.data);
@@ -107,13 +106,11 @@ const ReportForm = () => {
 
     const chosenUser = CatchUser(user.value, dataTest); // pegando dados do usuario escolhido para o relatorio
 
-
     if (user.value == '' || date == '') {
       setSucess('');
       setError('o usuário e/ou data não foram selecionados!!');
     } else {
       axios
-
         .post(process.env.NEXT_PUBLIC_API_ROUTE + '/reports', {
           id: user.value,
           startDate: date.startDate,
@@ -128,7 +125,6 @@ const ReportForm = () => {
         .catch((err) => {
           setSucess('');
           setError(err.response.data.message);
-
         });
     }
   };
@@ -200,7 +196,7 @@ const ReportForm = () => {
         )}
 
         <div className={titleContainer()}>
-<
+
           <div className={userArea()}>Usuario:</div>
           <div className={idArea()}>Dispositivo: </div>
         </div>
