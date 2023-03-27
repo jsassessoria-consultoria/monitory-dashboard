@@ -25,7 +25,7 @@ const title = cva(['text-center text-white text-xl mb-10']);
 
 const dateTitle = cva(['mb-10']);
 const titleContainer = cva(['bg-violet-700  h-12 flex font-bold']);
-const mainContainer = cva(['overflow-y-scroll h-1/4 ']);
+const mainContainer = cva(['overflow-y-scroll h-40 ']);
 const dataContainer = cva([
   'bg-violet-800  h-12 flex hover:bg-violet-600 text-sm'
 ]);
