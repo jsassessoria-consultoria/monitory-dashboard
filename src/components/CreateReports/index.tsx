@@ -49,7 +49,6 @@ function CreateReports(reports: any, user: any, date: any) {
         String(minutos.toFixed()).padStart(2, '0') +
         ' minutos';
 
-
       return [
         {
           text: subreport.nome,

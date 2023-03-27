@@ -29,7 +29,8 @@ const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
 ]);
 const imggraphic = cva(['w-full']);
-const computer = cva(['w-1/3']);
+
+const computer = cva(['w-1/3 2xl:1/4']);
 
 const SignUp = () => {
   const [emailError, setErrorEmail] = useState(false);
@@ -46,7 +47,6 @@ const SignUp = () => {
     const { email, confEmail, senha } = data;
     if (email == confEmail) {
       setErrorEmail(false);
-
       axios
         .post(process.env.NEXT_PUBLIC_API_ROUTE + '/signup', {
           email: email,
@@ -82,7 +82,6 @@ const SignUp = () => {
         <Image
 
           src="/images/grafico.png"
-
           alt="computador"
           width={400}
           height={100}

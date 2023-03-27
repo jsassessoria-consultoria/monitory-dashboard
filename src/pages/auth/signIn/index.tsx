@@ -32,7 +32,6 @@ const buttonarea = cva([
 const iconsArea = cva(['flex ml-20 mt-20 sxl:mt-10']);
 const imageIcon = cva(['w-1/4']);
 const image = cva(['w-2/4 h-96 mt-27 sxl:mt-10 xl:mt-5 sxl:h-1/3']);
-
 const icon = cva(['flex flex-col items-center ']);
 const errorarea = cva(['bg-red-600 rounded-lg']);
 
@@ -124,7 +123,6 @@ const SignIn = () => {
               <Image
 
                 src="/images/pesquisa.png"
-
                 alt="computador"
                 width={200}
                 height={200}
@@ -138,7 +136,6 @@ const SignIn = () => {
               <Image
 
                 src="/images/analise.png"
-
                 alt="computador"
                 width={200}
                 height={200}
@@ -151,7 +148,6 @@ const SignIn = () => {
               <Image
 
                 src="/images/relatorio.png"
-
                 alt="computador"
                 width={200}
                 height={200}
@@ -164,7 +160,6 @@ const SignIn = () => {
         <Image
 
           src="/images/monitoramento.png"
-
           alt="computador"
           width={200}
           height={200}

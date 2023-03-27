@@ -12,7 +12,6 @@ export default async function handler(
 ) {
 
   if (req.method === 'POST') {
-
     const { id, startDate, endDate } = req.body;
 
     const validateBody = await schemaValidator(pdfSchema, req.body);

@@ -11,7 +11,6 @@ import ptBr from 'rsuite/locales/pt_BR';
 import isAfter from 'date-fns/isAfter';
 
 import CreateReports from '../CreateReports';
-
 import CatchUser from '../CatchUser';
 
 const errorarea = cva(['bg-red-600 rounded-lg mb-10 text-center']);
@@ -20,17 +19,16 @@ const sucessarea = cva([
 ]);
 
 const container = cva([
-
   'flex flex-col text-white w-3/4 p-10 h-max bg-violet-900 rounded-xl sm:w-full'
 ]);
 const title = cva(['text-center text-white text-xl mb-10']);
 
 const dateTitle = cva(['mb-10']);
 const titleContainer = cva(['bg-violet-700  h-12 flex font-bold']);
-const mainContainer = cva(['overflow-y-scroll h-1/4 ']);
+
+const mainContainer = cva(['overflow-y-scroll h-40 ']);
 const dataContainer = cva([
   'bg-violet-800  h-12 flex hover:bg-violet-600 text-sm'
-
 ]);
 const dataContainerSelect = cva([
   'bg-violet-600  h-12 flex hover:bg-violet-600 '
@@ -71,7 +69,6 @@ const ReportForm = () => {
   const [sucess, setSucess] = useState<String>();
 
   const [dateValue, setDateValue] = useState<DateRange>();
-
   const Currentdate = new Date();
 
   async function fetchData() {
@@ -92,7 +89,6 @@ const ReportForm = () => {
     fetchData();
   });
 
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     let date: any;
@@ -103,7 +99,6 @@ const ReportForm = () => {
     }
 
     const { user } = e.target;
-
     const chosenUser = CatchUser(user.value, dataTest); // pegando dados do usuario escolhido para o relatorio
 
     if (user.value == '' || date == '') {
@@ -129,7 +124,6 @@ const ReportForm = () => {
     }
   };
 
-
   const searchUsers = (e: any) => {
     if (e.target.value == '') {
       setDatatest(dataInit);
@@ -138,7 +132,6 @@ const ReportForm = () => {
 
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
-
       });
       setDatatest(filterdata);
     }
@@ -147,12 +140,10 @@ const ReportForm = () => {
 
   const handleDate = (value: any) => {
     setDateValue(value);
-
   };
 
   return (
     <div className={container()}>
-
       <div className={title()}>Pesquise seus relatorios aqui</div>
       <form onSubmit={handleSubmit}>
         <div className={dateTitle()}>
@@ -211,7 +202,6 @@ const ReportForm = () => {
               name="user"
 
               value={idValue} //pegar id do user
-
               type="hidden"
               required
             />
@@ -234,7 +224,6 @@ const ReportForm = () => {
             ))}
           </div>
         )}
-
 
         <div className={buttonarea()}>
           <Button type="submit" title="Buscar Relatorio" />
