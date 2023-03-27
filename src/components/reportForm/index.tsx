@@ -25,6 +25,7 @@ const title = cva(['text-center text-white text-xl mb-10']);
 
 const dateTitle = cva(['mb-10']);
 const titleContainer = cva(['bg-violet-700  h-12 flex font-bold']);
+
 const mainContainer = cva(['overflow-y-scroll h-40 ']);
 const dataContainer = cva([
   'bg-violet-800  h-12 flex hover:bg-violet-600 text-sm'
@@ -33,10 +34,12 @@ const dataContainerSelect = cva([
   'bg-violet-600  h-12 flex hover:bg-violet-600 '
 ]);
 
+
 const idArea = cva(['text-white font-medium w-1/2 mt-3  font-bold']);
 const userArea = cva([
   'text-white font-medium w-1/2 mt-3 ml-5 font-bold'
 ]);
+
 
 const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
@@ -49,17 +52,19 @@ const label = cva([
   'block mb-2 ml-2 text-lg font-medium text-white dark:text-white'
 ]);
 
+
 type User = {
   id: string;
   usuario: string;
   nome: string;
-  
+
 };
 
 const ReportForm = () => {
   const [dataTest, setDatatest] = useState<User[]>([]);
   const [dataInit, setDataInit] = useState<User[]>([]);
   const [idValue, setIdvalue] = useState<string>();
+
   const [error, setError] = useState<String>();
   const [sucess, setSucess] = useState<String>();
 
@@ -124,12 +129,14 @@ const ReportForm = () => {
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
+
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
       });
       setDatatest(filterdata);
     }
   };
+
 
   const handleDate = (value: any) => {
     setDateValue(value);
@@ -180,6 +187,7 @@ const ReportForm = () => {
         )}
 
         <div className={titleContainer()}>
+
           <div className={userArea()}>Usuario:</div>
           <div className={idArea()}>Dispositivo: </div>
         </div>
@@ -192,6 +200,7 @@ const ReportForm = () => {
             <input
               id="user"
               name="user"
+
               value={idValue} //pegar id do user
               type="hidden"
               required
@@ -208,6 +217,7 @@ const ReportForm = () => {
                   setIdvalue(data.id);
                 }}
               >
+
                 <div className={userArea()}>{data.usuario}</div>
                 <div className={idArea()}>{data.nome} </div>
               </div>

@@ -125,6 +125,7 @@ export default function Home() {
           setIsEdit(false);
         });
     }
+
   };
 
   const deleteData = async (e: any) => {

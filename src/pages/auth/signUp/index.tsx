@@ -29,6 +29,7 @@ const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
 ]);
 const imggraphic = cva(['w-full']);
+
 const computer = cva(['w-1/3 2xl:1/4']);
 
 const SignUp = () => {
@@ -79,6 +80,7 @@ const SignUp = () => {
           aqui
         </div>
         <Image
+
           src="/images/grafico.png"
           alt="computador"
           width={400}

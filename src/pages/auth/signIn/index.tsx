@@ -28,6 +28,7 @@ const descriptionform = cva([
 const buttonarea = cva([
   'flex items-center w-full justify-center mt-8 mb-8'
 ]);
+
 const iconsArea = cva(['flex ml-20 mt-20 sxl:mt-10']);
 const imageIcon = cva(['w-1/4']);
 const image = cva(['w-2/4 h-96 mt-27 sxl:mt-10 xl:mt-5 sxl:h-1/3']);
@@ -120,6 +121,7 @@ const SignIn = () => {
             <div className={icon()}>
               <div>Pesquisa</div>
               <Image
+
                 src="/images/pesquisa.png"
                 alt="computador"
                 width={200}
@@ -132,6 +134,7 @@ const SignIn = () => {
             <div className={icon()}>
               <div>Analise</div>
               <Image
+
                 src="/images/analise.png"
                 alt="computador"
                 width={200}
@@ -143,6 +146,7 @@ const SignIn = () => {
             <div className={icon()}>
               <div>Relatorio</div>
               <Image
+
                 src="/images/relatorio.png"
                 alt="computador"
                 width={200}
@@ -154,6 +158,7 @@ const SignIn = () => {
           </div>
         </div>
         <Image
+
           src="/images/monitoramento.png"
           alt="computador"
           width={200}
