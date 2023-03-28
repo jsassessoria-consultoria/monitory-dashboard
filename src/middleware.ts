@@ -6,10 +6,20 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const sessao = await getToken({
-    req,
-    cookieName: 'next-auth.session-token'
-  });
+  let sessao = null;
+
+  if (process.env.NEXT_PRODUCTION === 'true') {
+    sessao = await getToken({
+      req,
+      cookieName: '__Secure-next-auth.session-token'
+    });
+  } else {
+    sessao = await getToken({
+      req,
+      cookieName: 'next-auth.session-token'
+    });
+  }
+
   if (sessao === null) {
     return new NextResponse(
       JSON.stringify({
