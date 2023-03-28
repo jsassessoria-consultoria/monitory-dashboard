@@ -69,7 +69,7 @@ export default function Home() {
 
   async function fetchData() {
     axios
-      .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
+      .get('/device')
       .then(res => {
         setDatatest(res.data.data);
 
@@ -111,7 +111,7 @@ export default function Home() {
       setIsEdit(false);
     } else {
       axios
-        .put(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
+        .put('/device', {
           id: id.value,
           nome: device.value,
           usuario: user.value
@@ -125,13 +125,12 @@ export default function Home() {
           setIsEdit(false);
         });
     }
-
   };
 
   const deleteData = async (e: any) => {
     const { id } = e.target;
     axios
-      .delete(process.env.NEXT_PUBLIC_API_ROUTE + '/device', {
+      .delete('/device', {
         data: { id: id }
       })
       .then(() => {
@@ -239,7 +238,14 @@ export default function Home() {
                     </div>
                   ) : (
                     <div className={localeArea()}>
-                      <Link href={`https://www.google.es/maps?q=${data.lat},${data.long}`}>veja aqui sua localização {data.isAccuracy == true ? ' (alta precisão)' : ' (baixa precisão)'}</Link>
+                      <Link
+                        href={`https://www.google.es/maps?q=${data.lat},${data.long}`}
+                      >
+                        veja aqui sua localização{' '}
+                        {data.isAccuracy == true
+                          ? ' (alta precisão)'
+                          : ' (baixa precisão)'}
+                      </Link>
                     </div>
                   )}
 
