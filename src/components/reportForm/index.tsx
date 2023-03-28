@@ -34,12 +34,10 @@ const dataContainerSelect = cva([
   'bg-violet-600  h-12 flex hover:bg-violet-600 '
 ]);
 
-
 const idArea = cva(['text-white font-medium w-1/2 mt-3  font-bold']);
 const userArea = cva([
   'text-white font-medium w-1/2 mt-3 ml-5 font-bold'
 ]);
-
 
 const buttonarea = cva([
   'flex items-center w-full justify-center mt-8'
@@ -52,12 +50,10 @@ const label = cva([
   'block mb-2 ml-2 text-lg font-medium text-white dark:text-white'
 ]);
 
-
 type User = {
   id: string;
   usuario: string;
   nome: string;
-
 };
 
 const ReportForm = () => {
@@ -73,7 +69,7 @@ const ReportForm = () => {
 
   async function fetchData() {
     axios
-      .get(process.env.NEXT_PUBLIC_API_ROUTE + '/device')
+      .get('/api/device')
       .then(res => {
         setDatatest(res.data.data);
 
@@ -106,7 +102,7 @@ const ReportForm = () => {
       setError('o usuário e/ou data não foram selecionados!!');
     } else {
       axios
-        .post(process.env.NEXT_PUBLIC_API_ROUTE + '/reports', {
+        .post('/api/reports', {
           id: user.value,
           startDate: date.startDate,
           endDate: date.endDate
@@ -117,7 +113,7 @@ const ReportForm = () => {
           setSucess('relatorio solicitado com sucesso'); //ficara essa mensagem por enquanto para representar o retorno do backEnd mas posteriormente ela sera substituida
           CreateReports(res.data.data, chosenUser, date); // device sera substituido por res.data.software e res.data.user
         })
-        .catch((err) => {
+        .catch(err => {
           setSucess('');
           setError(err.response.data.message);
         });
@@ -129,14 +125,12 @@ const ReportForm = () => {
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
-
         const { nome } = data;
         return nome.toLowerCase().includes(e.target.value);
       });
       setDatatest(filterdata);
     }
   };
-
 
   const handleDate = (value: any) => {
     setDateValue(value);
@@ -187,7 +181,6 @@ const ReportForm = () => {
         )}
 
         <div className={titleContainer()}>
-
           <div className={userArea()}>Usuario:</div>
           <div className={idArea()}>Dispositivo: </div>
         </div>
@@ -200,7 +193,6 @@ const ReportForm = () => {
             <input
               id="user"
               name="user"
-
               value={idValue} //pegar id do user
               type="hidden"
               required
@@ -217,7 +209,6 @@ const ReportForm = () => {
                   setIdvalue(data.id);
                 }}
               >
-
                 <div className={userArea()}>{data.usuario}</div>
                 <div className={idArea()}>{data.nome} </div>
               </div>
