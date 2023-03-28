@@ -69,7 +69,7 @@ export default function Home() {
 
   async function fetchData() {
     axios
-      .get('/device')
+      .get('/api/device')
       .then(res => {
         setDatatest(res.data.data);
 
@@ -111,7 +111,7 @@ export default function Home() {
       setIsEdit(false);
     } else {
       axios
-        .put('/device', {
+        .put('/api/device', {
           id: id.value,
           nome: device.value,
           usuario: user.value
@@ -130,7 +130,7 @@ export default function Home() {
   const deleteData = async (e: any) => {
     const { id } = e.target;
     axios
-      .delete('/device', {
+      .delete('/api/device', {
         data: { id: id }
       })
       .then(() => {

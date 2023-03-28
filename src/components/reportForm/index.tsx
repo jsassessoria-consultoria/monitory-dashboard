@@ -69,7 +69,7 @@ const ReportForm = () => {
 
   async function fetchData() {
     axios
-      .get('/device')
+      .get('/api/device')
       .then(res => {
         setDatatest(res.data.data);
 
@@ -102,7 +102,7 @@ const ReportForm = () => {
       setError('o usuário e/ou data não foram selecionados!!');
     } else {
       axios
-        .post('/reports', {
+        .post('/api/reports', {
           id: user.value,
           startDate: date.startDate,
           endDate: date.endDate
