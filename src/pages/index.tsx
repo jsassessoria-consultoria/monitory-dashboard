@@ -252,7 +252,7 @@ export default function Home() {
 
                   <div className={actionArea()}>
                     <Image
-                      src="/../public/images/editar.png"
+                      src="/images/editar.png"
                       alt="editar"
                       width={35}
                       height={35}
@@ -265,7 +265,7 @@ export default function Home() {
                     />
 
                     <Image
-                      src="/../public/images/delete.png"
+                      src="/images/delete.png"
                       alt="deletar"
                       width={30}
                       height={30}
