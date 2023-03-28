@@ -240,6 +240,7 @@ export default function Home() {
                     <div className={localeArea()}>
                       <Link
                         href={`https://www.google.es/maps?q=${data.lat},${data.long}`}
+                        target="_blank"
                       >
                         veja aqui sua localização{' '}
                         {data.isAccuracy == true
