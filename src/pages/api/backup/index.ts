@@ -14,20 +14,22 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    const { token } = req.headers;
-    if (!token) {
+    const { authorization } = req.headers;
+    if (!authorization) {
       res.status(401).json({
         message:
           'Necessário enviar Token do usuário nos HEADERS da requisição com chave: "token"'
       });
       return;
     }
-    const tokenWoBearer = removeBearerTokenPrefix(String(token));
+    const tokenWoBearer = removeBearerTokenPrefix(
+      String(authorization)
+    );
     const hasToken = await getUserToken(tokenWoBearer);
     if (!hasToken) {
       res
         .status(401)
-        .json({ message: `O token: ${token} é inválido` });
+        .json({ message: `O token: ${authorization} é inválido` });
       return;
     }
 
@@ -61,12 +63,10 @@ export default async function handler(
           }
         });
       });
-      return res
-        .status(200)
-        .json({
-          processes: daysAndProcesses,
-          message: 'backup realizado'
-        });
+      return res.status(200).json({
+        processes: daysAndProcesses,
+        message: 'backup realizado'
+      });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }

@@ -28,20 +28,22 @@ export default async function handler(
       return;
     }
 
-    const { token } = req.headers;
-    if (!token) {
+    const { authorization } = req.headers;
+    if (!authorization) {
       res.status(401).json({
         message:
           'Necessário enviar Token do usuário nos HEADERS da requisição com chave: "token"'
       });
       return;
     }
-    const tokenWoBearer = removeBearerTokenPrefix(String(token));
+    const tokenWoBearer = removeBearerTokenPrefix(
+      String(authorization)
+    );
     const hasToken = await getUserToken(tokenWoBearer);
     if (!hasToken) {
       res
         .status(401)
-        .json({ message: `O token: ${token} é inválido` });
+        .json({ message: `O token: ${authorization} é inválido` });
       return;
     }
 
