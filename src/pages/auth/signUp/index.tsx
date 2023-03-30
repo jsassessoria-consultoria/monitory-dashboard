@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import Link from 'next/link';
 
-
 import Head from 'next/head';
 
 const errorarea = cva(['bg-red-600 rounded-lg']);
@@ -48,7 +47,7 @@ const SignUp = () => {
     if (email == confEmail) {
       setErrorEmail(false);
       axios
-        .post(process.env.NEXT_PUBLIC_API_ROUTE + '/signup', {
+        .post('/signup', {
           email: email,
           senha: senha
         }) //caminho do back pegando do .env + nome da rota
@@ -80,7 +79,6 @@ const SignUp = () => {
           aqui
         </div>
         <Image
-
           src="/images/grafico.png"
           alt="computador"
           width={400}
