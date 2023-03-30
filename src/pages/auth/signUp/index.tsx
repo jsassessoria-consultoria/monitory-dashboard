@@ -47,7 +47,7 @@ const SignUp = () => {
     if (email == confEmail) {
       setErrorEmail(false);
       axios
-        .post('/signup', {
+        .post('/api/signup', {
           email: email,
           senha: senha
         }) //caminho do back pegando do .env + nome da rota
