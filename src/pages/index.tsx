@@ -43,7 +43,7 @@ const userEditArea = cva(['font-medium w-1/2 flex ']);
 const inputArea = cva(['w-3/4']);
 const buttonArea = cva(['w-1/5 h-10 mt-1 ml-1 flex ']);
 const mainContainer = cva([
-  'overflow-y-scroll h-1/2 sm:h-full sm:overflow-y-hidden'
+  'overflow-y-scroll h-96 sm:h-full sm:overflow-y-hidden'
 ]);
 const formArea = cva(['flex']);
 const arrayEmpty = cva(['text-black text-center font-medium mt-10']);
