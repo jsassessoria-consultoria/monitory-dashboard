@@ -125,8 +125,8 @@ const ReportForm = () => {
       setDatatest(dataInit);
     } else {
       const filterdata = dataTest.filter(data => {
-        const { nome } = data;
-        return nome.toLowerCase().includes(e.target.value);
+        const { usuario } = data;
+        return usuario.toLowerCase().includes(e.target.value.toLowerCase());
       });
       setDatatest(filterdata);
     }
