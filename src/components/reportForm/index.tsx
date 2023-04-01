@@ -83,7 +83,7 @@ const ReportForm = () => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
